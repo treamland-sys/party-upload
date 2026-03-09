@@ -1,3 +1,4 @@
+globalThis.counter = globalThis.counter || 0;
 let counter = 0;
 
 export async function onRequest(context) {
@@ -51,3 +52,4 @@ return new Response("Nextcloud Status: "+response.status);
 return new Response("Worker läuft");
 
 }
+
