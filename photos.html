@@ -24,7 +24,7 @@ padding:20px;
 font-size:28px;
 }
 
-/* Galerie Layout */
+/* Galerie */
 
 .gallery{
 
@@ -38,13 +38,12 @@ margin:auto;
 
 }
 
-/* Bilder */
-
 .gallery img{
 
 width:100%;
 border-radius:12px;
 cursor:pointer;
+
 transition:transform 0.2s;
 
 }
@@ -79,6 +78,8 @@ async function loadImages(){
 
 try{
 
+/* Worker API aufrufen */
+
 const res = await fetch("/gallery");
 const images = await res.json();
 
@@ -86,21 +87,21 @@ const gallery = document.getElementById("gallery");
 
 gallery.innerHTML="";
 
-/* Domain hinzufügen */
+/* Domain für Bilder */
 
 const base = "https://nx70782.your-storageshare.de";
 
+/* Bilder anzeigen */
+
 images.reverse().forEach(path=>{
 
-const img=document.createElement("img");
+const img = document.createElement("img");
 
 img.src = base + path;
 
-img.loading="lazy";
+img.loading = "lazy";
 
-img.onclick=()=>{
-window.open(img.src,"_blank");
-};
+img.onclick = () => window.open(img.src,"_blank");
 
 gallery.appendChild(img);
 
@@ -114,6 +115,8 @@ document.getElementById("gallery").innerHTML =
 }
 
 }
+
+/* erste Ladung */
 
 loadImages();
 
