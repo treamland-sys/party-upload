@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>📸 Party Galerie</title>
 
 <style>
@@ -21,14 +22,28 @@ padding:20px;
 margin:0;
 }
 
-.download-btn{
+.controls{
+margin-bottom:10px;
+}
+
+.btn{
 background:#ffd54f;
 border:none;
-padding:14px 24px;
-border-radius:12px;
+padding:12px 18px;
+border-radius:10px;
 font-weight:bold;
 cursor:pointer;
-margin-bottom:10px;
+margin:5px;
+text-decoration:none;
+color:black;
+display:inline-block;
+}
+
+.badge{
+display:block;
+margin-top:6px;
+font-size:15px;
+opacity:0.9;
 }
 
 .gallery{
@@ -99,9 +114,19 @@ border-radius:10px;
 
 <h1>📸 Party Galerie</h1>
 
-<button class="download-btn" onclick="downloadSelected()">
-⬇ Ausgewählte Fotos herunterladen
+<div class="controls">
+
+<button onclick="downloadSelected()" class="btn">
+⬇ Ausgewählte Fotos
 </button>
+
+<a href="/" class="btn">
+📤 Fotos hochladen
+</a>
+
+<span id="newPhotos" class="badge"></span>
+
+</div>
 
 <div class="gallery" id="gallery"></div>
 
@@ -113,6 +138,8 @@ async function loadImages(){
 
 const res = await fetch("/gallery");
 const images = await res.json();
+
+checkNewPhotos(images);
 
 const gallery=document.getElementById("gallery");
 gallery.innerHTML="";
@@ -149,7 +176,7 @@ selected=selected.filter(i=>i!==url);
 
 };
 
-/* Bildklick = Vollbild */
+/* Bild Klick = Vollbild */
 
 img.onclick=()=>{
 
@@ -183,19 +210,35 @@ return;
 }
 
 selected.forEach(url=>{
-
-const a=document.createElement("a");
-a.href=url;
-a.download="";
-document.body.appendChild(a);
-a.click();
-a.remove();
-
+window.open(url,"_blank");
 });
 
 }
 
+function checkNewPhotos(images){
+
+const lastCount = localStorage.getItem("photoCount");
+
+if(lastCount){
+
+const diff = images.length - lastCount;
+
+if(diff > 0){
+
+document.getElementById("newPhotos").innerText =
+"🆕 " + diff + " neue Fotos seit deinem letzten Besuch";
+
+}
+
+}
+
+localStorage.setItem("photoCount", images.length);
+
+}
+
 loadImages();
+
+/* Galerie automatisch aktualisieren */
 
 setInterval(loadImages,15000);
 
