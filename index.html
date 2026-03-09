@@ -60,6 +60,22 @@ margin-top:20px;
 font-size:16px;
 }
 
+.progress{
+width:100%;
+background:rgba(255,255,255,0.3);
+border-radius:12px;
+margin-top:15px;
+overflow:hidden;
+height:16px;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:#22c55e;
+transition:width 0.2s;
+}
+
 /* Luftballons */
 
 .balloon{
@@ -108,6 +124,10 @@ top:80px;
 
 <div id="status"></div>
 
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
 </div>
 
 <script>
@@ -133,6 +153,7 @@ document.body.appendChild(b);
 
 const input=document.getElementById("fileInput");
 const status=document.getElementById("status");
+const bar=document.getElementById("bar");
 
 input.addEventListener("change", async function(){
 
@@ -150,6 +171,17 @@ xhr.open("POST","/upload");
 
 xhr.setRequestHeader("x-file-name",file.name);
 
+xhr.upload.onprogress=function(e){
+
+if(e.lengthComputable){
+
+let percent=(e.loaded/e.total)*100;
+bar.style.width=percent+"%";
+
+}
+
+};
+
 xhr.onload=function(){
 
 status.innerHTML="Upload erfolgreich 🎉";
@@ -159,6 +191,12 @@ particleCount:160,
 spread:80,
 origin:{y:0.6}
 });
+
+bar.style.width="100%";
+
+setTimeout(()=>{
+bar.style.width="0%";
+},1500);
 
 input.value="";
 
