@@ -111,4 +111,236 @@ text-decoration:none;
 cursor:pointer;
 
 text-align:center;
-transition:all 0.2s ea
+transition:all 0.2s ease;
+
+}
+
+/* Upload Button */
+
+.upload-btn{
+background:#ffd54f;
+color:#333;
+animation:pulse 2.5s infinite;
+}
+
+/* Galerie Button */
+
+.gallery-btn{
+background:#fff3b0;
+color:#333;
+}
+
+/* Hover */
+
+.upload-btn:hover,
+.gallery-btn:hover{
+transform:scale(1.04);
+}
+
+/* Pulsieren */
+
+@keyframes pulse{
+
+0%{
+box-shadow:0 0 0 0 rgba(255,213,79,0.6);
+}
+
+70%{
+box-shadow:0 0 0 16px rgba(255,213,79,0);
+}
+
+100%{
+box-shadow:0 0 0 0 rgba(255,213,79,0);
+}
+
+}
+
+/* STATUS */
+
+#status{
+margin-top:15px;
+font-size:17px;
+}
+
+/* PROGRESSBAR */
+
+.progress{
+width:100%;
+background:rgba(255,255,255,0.25);
+border-radius:10px;
+margin-top:20px;
+overflow:hidden;
+height:14px;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:#22c55e;
+transition:width 0.2s;
+}
+
+input{
+display:none;
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:24px;
+font-size:14px;
+opacity:0.85;
+}
+
+/* MOBILE */
+
+@media (max-width:500px){
+
+.card{
+padding:28px;
+}
+
+h1{
+font-size:26px;
+}
+
+.description{
+font-size:15px;
+}
+
+.upload-btn,
+.gallery-btn{
+width:220px;
+font-size:18px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>🎉 Ellis 40. Geburtstag</h1>
+
+<div class="subtitle">
+Schön, dass du mitfeierst!
+</div>
+
+<div class="description">
+Lade hier deine schönsten Fotos und Videos von der Party hoch,
+damit wir die besten Erinnerungen sammeln können.
+</div>
+
+<div id="counter">📸 Fotos werden gezählt...</div>
+
+<label class="upload-btn">
+📸 Fotos hochladen
+<input type="file" id="fileInput" multiple>
+</label>
+
+<a class="gallery-btn"
+href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
+target="_blank">
+
+🖼 Fotos ansehen
+
+</a>
+
+<div id="status"></div>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div class="footer">
+Danke fürs Mitfeiern und Teilen der Erinnerungen 🥂
+</div>
+
+</div>
+
+<script>
+
+/* SCHWEBENDE KONFETTI */
+
+for(let i=0;i<25;i++){
+
+let c=document.createElement("div");
+
+c.className="confetti";
+
+c.style.left=Math.random()*100+"vw";
+
+c.style.animationDuration=(8+Math.random()*6)+"s";
+
+c.style.background=["#ffd54f","#ff6b6b","#6bcBef","#9d4edd"]
+[Math.floor(Math.random()*4)];
+
+document.body.appendChild(c);
+
+}
+
+/* FOTOZÄHLER */
+
+async function loadCounter(){
+
+try{
+
+const res = await fetch("/count");
+const data = await res.json();
+
+document.getElementById("counter").innerHTML =
+"📸 "+data.count+" Fotos wurden schon hochgeladen";
+
+}catch(e){
+
+document.getElementById("counter").innerHTML =
+"📸 Fotos werden gesammelt";
+
+}
+
+}
+
+loadCounter();
+
+/* UPLOAD */
+
+const input=document.getElementById("fileInput");
+const status=document.getElementById("status");
+const bar=document.getElementById("bar");
+
+input.addEventListener("change", async function(){
+
+let files=input.files;
+
+for(let file of files){
+
+status.innerHTML="Upload läuft...";
+
+let xhr=new XMLHttpRequest();
+
+xhr.open("POST","/upload");
+
+xhr.setRequestHeader("x-file-name",file.name);
+
+xhr.upload.onprogress=function(e){
+
+if(e.lengthComputable){
+
+let percent=(e.loaded/e.total)*100;
+bar.style.width=percent+"%";
+
+}
+
+};
+
+xhr.onload=function(){
+
+status.innerHTML="Upload erfolgreich 🎉";
+
+confetti({
+particleCount:180,
+s
