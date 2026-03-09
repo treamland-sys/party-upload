@@ -2,9 +2,11 @@
 
 <html lang="de">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Fotos</title>
+
+<title>Ellis 40. Geburtstag</title>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -12,66 +14,99 @@
 
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
-background:linear-gradient(135deg,#ff7a5c,#ffb56b);
+font-family:Arial,Helvetica,sans-serif;
 height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
 text-align:center;
-overflow:hidden;
 color:white;
+background-image:url("https://images.unsplash.com/photo-1513151233558-d860c5398176");
+background-size:cover;
+background-position:center;
 }
+
+/* Glas-Karte */
 
 .card{
-background:rgba(255,255,255,0.15);
+background:rgba(0,0,0,0.35);
+backdrop-filter:blur(8px);
 padding:40px;
-border-radius:20px;
+border-radius:22px;
 width:90%;
 max-width:420px;
-box-shadow:0 20px 60px rgba(0,0,0,0.3);
-backdrop-filter:blur(6px);
+box-shadow:0 20px 60px rgba(0,0,0,0.4);
 }
+
+/* Titel */
 
 h1{
-margin-top:0;
-font-size:32px;
+font-size:30px;
+margin-bottom:10px;
 }
 
+.subtitle{
+font-size:18px;
+opacity:0.9;
+margin-bottom:20px;
+}
+
+/* Text */
+
+p{
+font-size:16px;
+line-height:1.5;
+opacity:0.9;
+}
+
+/* Counter */
+
 #counter{
-margin-bottom:15px;
+margin:18px 0;
 font-size:18px;
 }
 
-.button{
-display:block;
-margin:18px auto;
+/* Upload Button */
+
+.upload-btn{
+background:#ffd54f;
+color:#333;
 padding:18px 28px;
-background:white;
-color:#ff5e62;
-font-size:22px;
+font-size:20px;
+border-radius:12px;
 font-weight:bold;
-border-radius:14px;
+display:inline-block;
 cursor:pointer;
+margin-top:15px;
 text-decoration:none;
 }
 
-input{
-display:none;
+.upload-btn:hover{
+transform:scale(1.05);
 }
 
-#status{
-margin-top:15px;
+/* Galerie Button */
+
+.gallery-btn{
+background:white;
+color:#333;
+padding:14px 24px;
 font-size:16px;
+border-radius:10px;
+display:block;
+margin-top:12px;
+text-decoration:none;
 }
+
+/* Progressbar */
 
 .progress{
 width:100%;
-background:rgba(255,255,255,0.3);
-border-radius:12px;
-margin-top:15px;
+background:rgba(255,255,255,0.25);
+border-radius:10px;
+margin-top:18px;
 overflow:hidden;
-height:16px;
+height:14px;
 }
 
 .bar{
@@ -81,31 +116,12 @@ background:#22c55e;
 transition:width 0.2s;
 }
 
-/* Luftballons */
-
-.balloon{
-position:absolute;
-bottom:-120px;
-width:60px;
-height:80px;
-border-radius:50%;
-opacity:0.7;
-animation:float 14s infinite ease-in;
+input{
+display:none;
 }
 
-.balloon:after{
-content:"";
-position:absolute;
-width:2px;
-height:60px;
-background:white;
-left:50%;
-top:80px;
-}
-
-@keyframes float{
-0%{transform:translateY(0)}
-100%{transform:translateY(-120vh)}
+#status{
+margin-top:15px;
 }
 
 </style>
@@ -116,17 +132,30 @@ top:80px;
 
 <div class="card">
 
-<h1>🎉 Party Fotos</h1>
+<h1>🎉 Ellis 40. Geburtstag</h1>
+
+<div class="subtitle">
+Schön, dass du mitfeierst!
+</div>
+
+<p>
+Lade hier deine schönsten Fotos und Videos von der Party hoch,
+damit wir die besten Erinnerungen sammeln können.
+</p>
 
 <div id="counter">📸 Fotos werden gezählt...</div>
 
-<label class="button">
+<label class="upload-btn">
 📸 Fotos hochladen
 <input type="file" id="fileInput" multiple>
 </label>
 
-<a class="button" href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA" target="_blank">
+<a class="gallery-btn"
+href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
+target="_blank">
+
 🖼 Fotos ansehen
+
 </a>
 
 <div id="status"></div>
@@ -135,28 +164,15 @@ top:80px;
 <div class="bar" id="bar"></div>
 </div>
 
+<p style="margin-top:20px;font-size:13px;">
+Danke fürs Mitfeiern und Teilen der Erinnerungen 🥂
+</p>
+
 </div>
 
 <script>
 
-/* Luftballons */
-
-const colors=["#ffd166","#ef476f","#06d6a0","#118ab2","#ff4d6d"];
-
-for(let i=0;i<12;i++){
-
-let b=document.createElement("div");
-b.className="balloon";
-
-b.style.background=colors[Math.floor(Math.random()*colors.length)];
-b.style.left=Math.random()*100+"vw";
-b.style.animationDuration=(10+Math.random()*8)+"s";
-
-document.body.appendChild(b);
-
-}
-
-/* Fotozähler laden */
+/* Fotozähler */
 
 async function loadCounter(){
 
@@ -189,8 +205,6 @@ input.addEventListener("change", async function(){
 
 let files=input.files;
 
-status.innerHTML="";
-
 for(let file of files){
 
 status.innerHTML="Upload läuft...";
@@ -217,8 +231,8 @@ xhr.onload=function(){
 status.innerHTML="Upload erfolgreich 🎉";
 
 confetti({
-particleCount:160,
-spread:80,
+particleCount:180,
+spread:100,
 origin:{y:0.6}
 });
 
