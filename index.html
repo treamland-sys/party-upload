@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Party Fotos Upload</title>
+<title>🎉 Party Fotos</title>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -38,14 +38,9 @@ margin-top:0;
 font-size:32px;
 }
 
-p{
-font-size:18px;
-opacity:0.9;
-}
-
-.upload-btn{
-display:inline-block;
-margin-top:20px;
+.button{
+display:block;
+margin:18px auto;
 padding:18px 28px;
 background:white;
 color:#ff5e62;
@@ -53,6 +48,7 @@ font-size:22px;
 font-weight:bold;
 border-radius:14px;
 cursor:pointer;
+text-decoration:none;
 }
 
 input{
@@ -100,12 +96,15 @@ top:80px;
 <div class="card">
 
 <h1>🎉 Party Fotos</h1>
-<p>Lade deine Bilder hoch</p>
 
-<label class="upload-btn">
+<label class="button">
 📸 Fotos hochladen
 <input type="file" id="fileInput" multiple>
 </label>
+
+<a class="button" href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA" target="_blank">
+🖼 Fotos ansehen
+</a>
 
 <div id="status"></div>
 
@@ -113,7 +112,7 @@ top:80px;
 
 <script>
 
-/* Luftballons erzeugen */
+/* Luftballons */
 
 const colors=["#ffd166","#ef476f","#06d6a0","#118ab2","#ff4d6d"];
 
@@ -139,7 +138,6 @@ input.addEventListener("change", async function(){
 
 let files=input.files;
 
-/* Status zurücksetzen */
 status.innerHTML="";
 
 for(let file of files){
@@ -162,7 +160,6 @@ spread:80,
 origin:{y:0.6}
 });
 
-/* Input zurücksetzen damit neuer Upload sauber startet */
 input.value="";
 
 };
@@ -179,9 +176,10 @@ xhr.send(file);
 
 });
 
-
 </script>
 
 </body>
 </html>
+
+
 
