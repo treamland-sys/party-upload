@@ -23,24 +23,54 @@ padding:20px;
 margin:0;
 }
 
+/* Masonry Layout */
+
 .gallery{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:12px;
-padding:12px;
+
+column-count:4;
+column-gap:12px;
+
 max-width:1200px;
 margin:auto;
+padding:12px;
+
 }
 
 .gallery img{
+
 width:100%;
+margin-bottom:12px;
 border-radius:12px;
 cursor:pointer;
+
+break-inside:avoid;
+
 transition:transform 0.2s;
+
 }
 
 .gallery img:hover{
-transform:scale(1.05);
+transform:scale(1.03);
+}
+
+/* Tablet */
+
+@media(max-width:900px){
+
+.gallery{
+column-count:3;
+}
+
+}
+
+/* Handy */
+
+@media(max-width:600px){
+
+.gallery{
+column-count:2;
+}
+
 }
 
 </style>
@@ -72,6 +102,37 @@ const img = document.createElement("img");
 
 img.src = "/image?file=" + filename;
 
+/* Vollbild */
+
+img.onclick = ()=>{
+
+const overlay=document.createElement("div");
+
+overlay.style.position="fixed";
+overlay.style.top="0";
+overlay.style.left="0";
+overlay.style.width="100%";
+overlay.style.height="100%";
+overlay.style.background="rgba(0,0,0,0.9)";
+overlay.style.display="flex";
+overlay.style.alignItems="center";
+overlay.style.justifyContent="center";
+overlay.style.zIndex="9999";
+
+const big=document.createElement("img");
+
+big.src=img.src;
+big.style.maxWidth="90%";
+big.style.maxHeight="90%";
+
+overlay.appendChild(big);
+
+overlay.onclick=()=>overlay.remove();
+
+document.body.appendChild(overlay);
+
+};
+
 gallery.appendChild(img);
 
 });
@@ -79,6 +140,9 @@ gallery.appendChild(img);
 }
 
 loadImages();
+
+/* automatische Aktualisierung */
+
 setInterval(loadImages,15000);
 
 </script>
