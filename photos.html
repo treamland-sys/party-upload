@@ -19,9 +19,8 @@ text-align:center;
 }
 
 h1{
-margin:0;
 padding:20px;
-font-size:28px;
+margin:0;
 }
 
 .gallery{
@@ -44,12 +43,6 @@ transition:transform 0.2s;
 transform:scale(1.05);
 }
 
-@media(max-width:600px){
-.gallery{
-grid-template-columns:repeat(2,1fr);
-}
-}
-
 </style>
 
 </head>
@@ -62,11 +55,7 @@ grid-template-columns:repeat(2,1fr);
 
 <script>
 
-const shareToken = "X7fK3RMRtgo8FbA";
-
 async function loadImages(){
-
-try{
 
 const res = await fetch("/gallery");
 const images = await res.json();
@@ -77,41 +66,19 @@ gallery.innerHTML="";
 
 images.reverse().forEach(path=>{
 
-/* Dateiname extrahieren */
-
 const filename = path.split("/").pop();
-
-/* Öffentlichen Download-Link bauen */
-
-const url =
-"https://nx70782.your-storageshare.de/s/" +
-shareToken +
-"/download?path=/&files=" +
-filename;
 
 const img = document.createElement("img");
 
-img.src = url;
-
-img.loading = "lazy";
-
-img.onclick = ()=>window.open(url,"_blank");
+img.src = "/image?file=" + filename;
 
 gallery.appendChild(img);
 
 });
 
-}catch(err){
-
-document.getElementById("gallery").innerHTML =
-"<p>Galerie konnte nicht geladen werden.</p>";
-
-}
-
 }
 
 loadImages();
-
 setInterval(loadImages,15000);
 
 </script>
