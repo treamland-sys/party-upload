@@ -139,6 +139,9 @@ input.addEventListener("change", async function(){
 
 let files=input.files;
 
+/* Status zurücksetzen */
+status.innerHTML="";
+
 for(let file of files){
 
 status.innerHTML="Upload läuft...";
@@ -159,6 +162,9 @@ spread:80,
 origin:{y:0.6}
 });
 
+/* Input zurücksetzen damit neuer Upload sauber startet */
+input.value="";
+
 };
 
 xhr.onerror=function(){
@@ -173,7 +179,9 @@ xhr.send(file);
 
 });
 
+
 </script>
 
 </body>
 </html>
+
