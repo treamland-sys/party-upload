@@ -38,6 +38,11 @@ margin-top:0;
 font-size:32px;
 }
 
+#counter{
+margin-bottom:15px;
+font-size:18px;
+}
+
 .button{
 display:block;
 margin:18px auto;
@@ -56,7 +61,7 @@ display:none;
 }
 
 #status{
-margin-top:20px;
+margin-top:15px;
 font-size:16px;
 }
 
@@ -113,6 +118,8 @@ top:80px;
 
 <h1>🎉 Party Fotos</h1>
 
+<div id="counter">📸 Fotos werden gezählt...</div>
+
 <label class="button">
 📸 Fotos hochladen
 <input type="file" id="fileInput" multiple>
@@ -148,6 +155,29 @@ b.style.animationDuration=(10+Math.random()*8)+"s";
 document.body.appendChild(b);
 
 }
+
+/* Fotozähler laden */
+
+async function loadCounter(){
+
+try{
+
+const res = await fetch("/count");
+const data = await res.json();
+
+document.getElementById("counter").innerHTML =
+"📸 "+data.count+" Fotos wurden schon hochgeladen";
+
+}catch(e){
+
+document.getElementById("counter").innerHTML =
+"📸 Fotos werden gesammelt";
+
+}
+
+}
+
+loadCounter();
 
 /* Upload */
 
@@ -199,6 +229,8 @@ bar.style.width="0%";
 },1500);
 
 input.value="";
+
+setTimeout(loadCounter,1000);
 
 };
 
