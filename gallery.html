@@ -19,49 +19,28 @@ text-align:center;
 }
 
 h1{
-margin:0;
 padding:20px;
-font-size:28px;
+margin:0;
 }
 
-/* Galerie Layout */
-
 .gallery{
-
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
 gap:12px;
-
 padding:12px;
 max-width:1200px;
 margin:auto;
-
 }
 
-/* Bilder */
-
 .gallery img{
-
 width:100%;
 border-radius:12px;
 cursor:pointer;
-
 transition:transform 0.2s;
-
 }
 
 .gallery img:hover{
 transform:scale(1.05);
-}
-
-/* Mobile */
-
-@media(max-width:600px){
-
-.gallery{
-grid-template-columns:repeat(2,1fr);
-}
-
 }
 
 </style>
@@ -76,23 +55,33 @@ grid-template-columns:repeat(2,1fr);
 
 <script>
 
-async function loadImages(){
+const share =
+"https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA";
 
-const res = await fetch("/gallery");
-const images = await res.json();
+/* Share Seite laden */
+
+async function loadGallery(){
+
+const res = await fetch(share);
+const html = await res.text();
+
+/* Bildlinks suchen */
+
+const matches = [...html.matchAll(/href="([^"]+\.(jpg|jpeg|png|webp))"/gi)];
+
+const images = matches.map(m=>m[1]);
 
 const gallery = document.getElementById("gallery");
 
 gallery.innerHTML="";
 
-images.reverse().forEach(src=>{
+images.forEach(src=>{
 
 const img=document.createElement("img");
 
 img.src=src;
-img.loading="lazy";
 
-img.onclick=()=>window.open(src,"_blank");
+img.onclick=()=>window.open(src);
 
 gallery.appendChild(img);
 
@@ -100,11 +89,9 @@ gallery.appendChild(img);
 
 }
 
-loadImages();
+loadGallery();
 
-/* alle 15 Sekunden aktualisieren */
-
-setInterval(loadImages,15000);
+setInterval(loadGallery,15000);
 
 </script>
 
