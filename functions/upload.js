@@ -1,3 +1,5 @@
+let counter = 0;
+
 export async function onRequest(context) {
 
 const token = "X7fK3RMRtgo8FbA";
@@ -6,7 +8,7 @@ const baseUrl = "https://nx70782.your-storageshare.de/public.php/webdav/";
 const request = context.request;
 const url = new URL(request.url);
 
-/* -------- UPLOAD -------- */
+/* ---------- Upload ---------- */
 
 if (request.method === "POST") {
 
@@ -26,45 +28,26 @@ body:body
 
 });
 
+/* Upload zählen */
+
+if(response.status === 201 || response.status === 204){
+counter++;
+}
+
 return new Response("Nextcloud Status: "+response.status);
 
 }
 
-/* -------- FOTOZÄHLER -------- */
+/* ---------- Zähler ---------- */
 
 if (url.pathname === "/count") {
 
-if (url.pathname === "/count") {
-
-const response = await fetch(baseUrl, {
-
-method:"PROPFIND",
-
-headers:{
-"Authorization":"Basic "+btoa(token+":"),
-"Depth":"1",
-"Content-Type":"application/xml"
-},
-
-body:`<?xml version="1.0"?> <d:propfind xmlns:d="DAV:"> <d:prop> <d:getcontentlength/> </d:prop> </d:propfind>`
-
-});
-
-const text = await response.text();
-
-/* Dateien zählen */
-
-const matches = text.match(/<d:response>/g);
-const count = matches ? matches.length - 1 : 0;
-
-return new Response(JSON.stringify({count:count}),{
+return new Response(JSON.stringify({count:counter}),{
 headers:{ "content-type":"application/json" }
 });
 
 }
 
-
 return new Response("Worker läuft");
 
 }
-
