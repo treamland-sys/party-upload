@@ -1,39 +1,163 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Party Fotos Upload</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Party Fotos Upload</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#ff7a5c,#ffb56b);
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+overflow:hidden;
+color:white;
+}
+
+.card{
+background:rgba(255,255,255,0.15);
+padding:40px;
+border-radius:20px;
+width:90%;
+max-width:420px;
+box-shadow:0 20px 60px rgba(0,0,0,0.3);
+backdrop-filter:blur(6px);
+}
+
+h1{
+margin-top:0;
+font-size:32px;
+}
+
+p{
+font-size:18px;
+opacity:0.9;
+}
+
+.upload-btn{
+display:inline-block;
+margin-top:20px;
+padding:18px 28px;
+background:white;
+color:#ff5e62;
+font-size:22px;
+font-weight:bold;
+border-radius:14px;
+cursor:pointer;
+}
+
+input{
+display:none;
+}
+
+#status{
+margin-top:20px;
+font-size:16px;
+}
+
+/* Luftballons */
+
+.balloon{
+position:absolute;
+bottom:-120px;
+width:60px;
+height:80px;
+border-radius:50%;
+opacity:0.7;
+animation:float 14s infinite ease-in;
+}
+
+.balloon:after{
+content:"";
+position:absolute;
+width:2px;
+height:60px;
+background:white;
+left:50%;
+top:80px;
+}
+
+@keyframes float{
+0%{transform:translateY(0)}
+100%{transform:translateY(-120vh)}
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h2>Party Fotos Upload</h2>
+<div class="card">
 
-<input type="file" id="fileInput">
+<h1>🎉 Party Fotos</h1>
+<p>Lade deine Bilder hoch</p>
 
-<p id="status"></p>
+<label class="upload-btn">
+📸 Fotos hochladen
+<input type="file" id="fileInput" multiple>
+</label>
+
+<div id="status"></div>
+
+</div>
 
 <script>
 
-const input = document.getElementById("fileInput");
-const status = document.getElementById("status");
+/* Luftballons erzeugen */
 
-input.addEventListener("change", function(){
+const colors=["#ffd166","#ef476f","#06d6a0","#118ab2","#ff4d6d"];
 
-let file = input.files[0];
+for(let i=0;i<12;i++){
 
-status.innerHTML="Upload startet...";
+let b=document.createElement("div");
+b.className="balloon";
 
-let xhr = new XMLHttpRequest();
+b.style.background=colors[Math.floor(Math.random()*colors.length)];
+b.style.left=Math.random()*100+"vw";
+b.style.animationDuration=(10+Math.random()*8)+"s";
+
+document.body.appendChild(b);
+
+}
+
+/* Upload */
+
+const input=document.getElementById("fileInput");
+const status=document.getElementById("status");
+
+input.addEventListener("change", async function(){
+
+let files=input.files;
+
+for(let file of files){
+
+status.innerHTML="Upload läuft...";
+
+let xhr=new XMLHttpRequest();
 
 xhr.open("POST","/upload");
 
-xhr.setRequestHeader("x-file-name", file.name);
+xhr.setRequestHeader("x-file-name",file.name);
 
 xhr.onload=function(){
 
-status.innerHTML="Antwort: " + xhr.responseText;
+status.innerHTML="Upload erfolgreich 🎉";
+
+confetti({
+particleCount:160,
+spread:80,
+origin:{y:0.6}
+});
 
 };
 
@@ -44,6 +168,8 @@ status.innerHTML="Upload Fehler";
 };
 
 xhr.send(file);
+
+}
 
 });
 
