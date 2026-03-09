@@ -1,9 +1,9 @@
-```html
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Party Upload</title>
+<title>Party Fotos Upload</title>
 </head>
 
 <body>
@@ -16,15 +16,14 @@
 
 <script>
 
-```html
-<script>
-
 const input = document.getElementById("fileInput");
 const status = document.getElementById("status");
 
 input.addEventListener("change", function(){
 
 let file = input.files[0];
+
+status.innerHTML="Upload startet...";
 
 let xhr = new XMLHttpRequest();
 
@@ -34,7 +33,7 @@ xhr.setRequestHeader("x-file-name", file.name);
 
 xhr.onload=function(){
 
-status.innerHTML = xhr.responseText;
+status.innerHTML="Antwort: " + xhr.responseText;
 
 };
 
@@ -49,11 +48,6 @@ xhr.send(file);
 });
 
 </script>
-```
-
-
-</script>
 
 </body>
 </html>
-```
