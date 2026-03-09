@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Party Galerie</title>
+<title>📸 Party Galerie</title>
 
 <style>
 
@@ -19,50 +19,30 @@ text-align:center;
 }
 
 h1{
-padding:20px;
 margin:0;
+padding:20px;
 }
 
-.gallery{
+/* Grid Galerie */
 
-column-count:3;
-column-gap:12px;
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+gap:12px;
 padding:12px;
 max-width:1200px;
 margin:auto;
-
 }
 
 .gallery img{
-
 width:100%;
-margin-bottom:12px;
 border-radius:12px;
 cursor:pointer;
 transition:transform 0.2s;
-
 }
 
 .gallery img:hover{
-transform:scale(1.03);
-}
-
-/* MOBILE */
-
-@media(max-width:800px){
-
-.gallery{
-column-count:2;
-}
-
-}
-
-@media(max-width:500px){
-
-.gallery{
-column-count:1;
-}
-
+transform:scale(1.05);
 }
 
 </style>
@@ -77,50 +57,57 @@ column-count:1;
 
 <script>
 
-const shareToken = "X7fK3RMRtgo8FbA";
+const token = "X7fK3RMRtgo8FbA";
+
+/* WebDAV Pfad */
 
 const webdav =
-"https://nx70782.your-storageshare.de/public.php/dav/files/"+shareToken+"/";
+"https://nx70782.your-storageshare.de/public.php/webdav/";
+
+/* Dateien laden */
 
 async function loadImages(){
 
-const response = await fetch(webdav,{
+const res = await fetch(webdav,{
 method:"PROPFIND",
 headers:{
+Authorization:"Basic "+btoa(token+":"),
 Depth:"1"
 }
 });
 
-const text = await response.text();
+const text = await res.text();
 
 const parser = new DOMParser();
 const xml = parser.parseFromString(text,"text/xml");
 
-const responses = [...xml.getElementsByTagName("d:response")];
+const responses=[...xml.getElementsByTagName("d:response")];
 
 const files = responses.map(r=>{
 
-const href = r.getElementsByTagName("d:href")[0].textContent;
-const modified = r.getElementsByTagName("d:getlastmodified")[0]?.textContent;
+const href=r.getElementsByTagName("d:href")[0].textContent;
+const modified=r.getElementsByTagName("d:getlastmodified")[0]?.textContent;
 
 return {href,modified};
 
 }).filter(f=>f.href.match(/\.(jpg|jpeg|png|webp)$/i));
 
+/* neueste zuerst */
+
 files.sort((a,b)=>new Date(b.modified)-new Date(a.modified));
 
-const gallery = document.getElementById("gallery");
+const gallery=document.getElementById("gallery");
+
+gallery.innerHTML="";
 
 files.forEach(file=>{
 
-const img=document.createElement("img");
+let img=document.createElement("img");
 
 img.src=file.href;
 
 img.onclick=()=>{
-
 window.open(file.href,"_blank");
-
 };
 
 gallery.appendChild(img);
@@ -131,8 +118,11 @@ gallery.appendChild(img);
 
 loadImages();
 
+/* alle 15 Sekunden aktualisieren */
+
+setInterval(loadImages,15000);
+
 </script>
 
 </body>
 </html>
-
