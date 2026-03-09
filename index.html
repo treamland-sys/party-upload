@@ -19,14 +19,15 @@ margin:0;
 font-family:Arial, Helvetica, sans-serif;
 
 min-height:100vh;
-padding:20px;
+padding:20px 16px;
 
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:flex-start;
 
 color:white;
 text-align:center;
+
 overflow-x:hidden;
 
 background:
@@ -35,7 +36,7 @@ radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), transparent 40%),
 linear-gradient(135deg,#1f6f73,#2f8f87,#3fa39b);
 }
 
-/* HINTERGRUND PARTIKEL */
+/* SCHWEBENDE PARTIKEL */
 
 .confetti{
 position:absolute;
@@ -46,8 +47,10 @@ animation:fall linear infinite;
 }
 
 @keyframes fall{
+
 0%{transform:translateY(-10vh) rotate(0deg);}
 100%{transform:translateY(110vh) rotate(360deg);}
+
 }
 
 /* KARTE */
@@ -56,7 +59,9 @@ animation:fall linear infinite;
 background:rgba(0,0,0,0.35);
 backdrop-filter:blur(12px);
 
-padding:40px;
+padding:30px;
+margin-top:30px;
+
 border-radius:24px;
 
 width:100%;
@@ -68,14 +73,14 @@ box-shadow:0 25px 60px rgba(0,0,0,0.45);
 /* TITEL */
 
 h1{
-font-size:30px;
+font-size:28px;
 margin-bottom:8px;
 }
 
 .subtitle{
 font-size:18px;
 opacity:0.9;
-margin-bottom:16px;
+margin-bottom:14px;
 }
 
 .description{
@@ -100,10 +105,10 @@ margin-bottom:20px;
 display:block;
 margin:12px auto;
 
-width:240px;
-padding:16px 20px;
+width:230px;
+padding:15px 20px;
 
-font-size:20px;
+font-size:19px;
 font-weight:bold;
 
 border-radius:14px;
@@ -144,7 +149,7 @@ transform:scale(1.04);
 /* STATUS */
 
 #status{
-margin-top:16px;
+margin-top:14px;
 font-size:17px;
 font-weight:500;
 }
@@ -174,7 +179,7 @@ display:none;
 /* FOOTER */
 
 .footer{
-margin-top:20px;
+margin-top:18px;
 font-size:14px;
 opacity:0.85;
 }
@@ -183,27 +188,22 @@ opacity:0.85;
 
 @media (max-width:500px){
 
-body{
-padding:14px;
-align-items:flex-start;
-}
-
-.card{
-padding:28px;
-margin-top:10px;
-}
-
 h1{
-font-size:26px;
+font-size:24px;
+}
+
+.subtitle{
+font-size:17px;
 }
 
 .description{
 font-size:15px;
+line-height:1.4;
 }
 
 .upload-btn,
 .gallery-btn{
-width:200px;
+width:210px;
 font-size:18px;
 padding:14px;
 }
@@ -225,7 +225,7 @@ Schön, dass du mitfeierst!
 </div>
 
 <div class="description">
-Lade hier deine schönsten Fotos von der Party hoch,
+Lade hier deine schönsten Fotos und Videos von der Party hoch,
 damit wir die besten Erinnerungen sammeln können.
 </div>
 
@@ -239,7 +239,10 @@ damit wir die besten Erinnerungen sammeln können.
 <a class="gallery-btn"
 href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
 target="_blank">
-🖼 Fotos ansehen </a>
+
+🖼 Fotos ansehen
+
+</a>
 
 <div id="status"></div>
 
@@ -257,7 +260,7 @@ Danke fürs Mitfeiern 🥂
 
 /* SCHWEBENDE PARTIKEL */
 
-for(let i=0;i<25;i++){
+for(let i=0;i<20;i++){
 
 let c=document.createElement("div");
 
@@ -289,72 +292,4 @@ document.getElementById("counter").innerHTML =
 }catch{
 
 document.getElementById("counter").innerHTML =
-"📸 Fotos werden gesammelt";
-
-}
-
-}
-
-loadCounter();
-
-/* UPLOAD */
-
-const input=document.getElementById("fileInput");
-const status=document.getElementById("status");
-const bar=document.getElementById("bar");
-
-input.addEventListener("change",function(){
-
-let files=input.files;
-
-for(let file of files){
-
-status.innerHTML="Upload läuft...";
-
-let xhr=new XMLHttpRequest();
-
-xhr.open("POST","/upload");
-
-xhr.setRequestHeader("x-file-name",file.name);
-
-xhr.upload.onprogress=function(e){
-
-if(e.lengthComputable){
-
-let percent=(e.loaded/e.total)*100;
-bar.style.width=percent+"%";
-
-}
-
-};
-
-xhr.onload=function(){
-
-status.innerHTML="Upload erfolgreich 🎉";
-
-confetti({
-particleCount:180,
-spread:100,
-origin:{y:0.6}
-});
-
-bar.style.width="100%";
-
-setTimeout(()=>{bar.style.width="0%";},1500);
-
-input.value="";
-
-setTimeout(loadCounter,1000);
-
-};
-
-xhr.send(file);
-
-}
-
-});
-
-</script>
-
-</body>
-</html>
+"📸 Fot
