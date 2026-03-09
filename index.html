@@ -17,13 +17,17 @@
 body{
 margin:0;
 font-family:Arial, Helvetica, sans-serif;
+
 min-height:100vh;
+padding:20px;
+
 display:flex;
 align-items:center;
 justify-content:center;
-text-align:center;
+
 color:white;
-overflow:hidden;
+text-align:center;
+overflow-x:hidden;
 
 background:
 radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08), transparent 40%),
@@ -31,7 +35,7 @@ radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), transparent 40%),
 linear-gradient(135deg,#1f6f73,#2f8f87,#3fa39b);
 }
 
-/* KONFETTI PARTIKEL */
+/* HINTERGRUND PARTIKEL */
 
 .confetti{
 position:absolute;
@@ -42,15 +46,8 @@ animation:fall linear infinite;
 }
 
 @keyframes fall{
-
-0%{
-transform:translateY(-10vh) rotate(0deg);
-}
-
-100%{
-transform:translateY(110vh) rotate(360deg);
-}
-
+0%{transform:translateY(-10vh) rotate(0deg);}
+100%{transform:translateY(110vh) rotate(360deg);}
 }
 
 /* KARTE */
@@ -58,10 +55,13 @@ transform:translateY(110vh) rotate(360deg);
 .card{
 background:rgba(0,0,0,0.35);
 backdrop-filter:blur(12px);
+
 padding:40px;
 border-radius:24px;
-width:90%;
+
+width:100%;
 max-width:420px;
+
 box-shadow:0 25px 60px rgba(0,0,0,0.45);
 }
 
@@ -82,14 +82,14 @@ margin-bottom:16px;
 font-size:16px;
 line-height:1.5;
 opacity:0.9;
-margin-bottom:20px;
+margin-bottom:18px;
 }
 
 /* COUNTER */
 
 #counter{
 font-size:18px;
-margin-bottom:22px;
+margin-bottom:20px;
 }
 
 /* BUTTONS */
@@ -115,60 +115,47 @@ transition:all 0.2s ease;
 
 }
 
-/* Upload Button */
-
 .upload-btn{
 background:#ffd54f;
 color:#333;
 animation:pulse 2.5s infinite;
 }
 
-/* Galerie Button */
-
 .gallery-btn{
 background:#fff3b0;
 color:#333;
 }
-
-/* Hover */
 
 .upload-btn:hover,
 .gallery-btn:hover{
 transform:scale(1.04);
 }
 
-/* Pulsieren */
+/* PULSE */
 
 @keyframes pulse{
 
-0%{
-box-shadow:0 0 0 0 rgba(255,213,79,0.6);
-}
-
-70%{
-box-shadow:0 0 0 16px rgba(255,213,79,0);
-}
-
-100%{
-box-shadow:0 0 0 0 rgba(255,213,79,0);
-}
+0%{box-shadow:0 0 0 0 rgba(255,213,79,0.6);}
+70%{box-shadow:0 0 0 16px rgba(255,213,79,0);}
+100%{box-shadow:0 0 0 0 rgba(255,213,79,0);}
 
 }
 
 /* STATUS */
 
 #status{
-margin-top:15px;
+margin-top:16px;
 font-size:17px;
+font-weight:500;
 }
 
 /* PROGRESSBAR */
 
 .progress{
 width:100%;
-background:rgba(255,255,255,0.25);
-border-radius:10px;
-margin-top:20px;
+background:rgba(255,255,255,0.35);
+border-radius:12px;
+margin-top:14px;
 overflow:hidden;
 height:14px;
 }
@@ -176,8 +163,8 @@ height:14px;
 .bar{
 height:100%;
 width:0%;
-background:#22c55e;
-transition:width 0.2s;
+background:linear-gradient(90deg,#22c55e,#4ade80);
+transition:width 0.25s;
 }
 
 input{
@@ -187,7 +174,7 @@ display:none;
 /* FOOTER */
 
 .footer{
-margin-top:24px;
+margin-top:20px;
 font-size:14px;
 opacity:0.85;
 }
@@ -196,8 +183,14 @@ opacity:0.85;
 
 @media (max-width:500px){
 
+body{
+padding:14px;
+align-items:flex-start;
+}
+
 .card{
 padding:28px;
+margin-top:10px;
 }
 
 h1{
@@ -210,8 +203,9 @@ font-size:15px;
 
 .upload-btn,
 .gallery-btn{
-width:220px;
+width:200px;
 font-size:18px;
+padding:14px;
 }
 
 }
@@ -231,7 +225,7 @@ Schön, dass du mitfeierst!
 </div>
 
 <div class="description">
-Lade hier deine schönsten Fotos und Videos von der Party hoch,
+Lade hier deine schönsten Fotos von der Party hoch,
 damit wir die besten Erinnerungen sammeln können.
 </div>
 
@@ -245,10 +239,7 @@ damit wir die besten Erinnerungen sammeln können.
 <a class="gallery-btn"
 href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
 target="_blank">
-
-🖼 Fotos ansehen
-
-</a>
+🖼 Fotos ansehen </a>
 
 <div id="status"></div>
 
@@ -257,14 +248,14 @@ target="_blank">
 </div>
 
 <div class="footer">
-Danke fürs Mitfeiern und Teilen der Erinnerungen 🥂
+Danke fürs Mitfeiern 🥂
 </div>
 
 </div>
 
 <script>
 
-/* SCHWEBENDE KONFETTI */
+/* SCHWEBENDE PARTIKEL */
 
 for(let i=0;i<25;i++){
 
@@ -295,7 +286,7 @@ const data = await res.json();
 document.getElementById("counter").innerHTML =
 "📸 "+data.count+" Fotos wurden schon hochgeladen";
 
-}catch(e){
+}catch{
 
 document.getElementById("counter").innerHTML =
 "📸 Fotos werden gesammelt";
@@ -312,7 +303,7 @@ const input=document.getElementById("fileInput");
 const status=document.getElementById("status");
 const bar=document.getElementById("bar");
 
-input.addEventListener("change", async function(){
+input.addEventListener("change",function(){
 
 let files=input.files;
 
@@ -343,4 +334,27 @@ status.innerHTML="Upload erfolgreich 🎉";
 
 confetti({
 particleCount:180,
-s
+spread:100,
+origin:{y:0.6}
+});
+
+bar.style.width="100%";
+
+setTimeout(()=>{bar.style.width="0%";},1500);
+
+input.value="";
+
+setTimeout(loadCounter,1000);
+
+};
+
+xhr.send(file);
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
