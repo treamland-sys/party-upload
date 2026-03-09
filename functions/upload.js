@@ -13,19 +13,21 @@ const body = await request.arrayBuffer();
 
 const response = await fetch(uploadUrl + Date.now()+"_"+fileName, {
 
-method: "PUT",
+method:"PUT",
 
-headers: {
-"Authorization": "Basic " + btoa(token + ":"),
-"Content-Type": "application/octet-stream"
+headers:{
+"Authorization":"Basic "+btoa(token+":"),
+"Content-Type":"application/octet-stream"
 },
 
-body: body
+body:body
 
 });
 
 return new Response(
-"Nextcloud Status: " + response.status
+"Nextcloud Status: "+response.status
 );
 
 }
+
+
