@@ -8,6 +8,16 @@ const baseUrl = "https://nx70782.your-storageshare.de/public.php/webdav/";
 const request = context.request;
 const url = new URL(request.url);
 
+/* ---------- Zähler anzeigen ---------- */
+
+if (url.pathname === "/count") {
+
+return new Response(JSON.stringify({count:counter}),{
+headers:{ "content-type":"application/json" }
+});
+
+}
+
 /* ---------- Upload ---------- */
 
 if (request.method === "POST") {
@@ -35,16 +45,6 @@ counter++;
 }
 
 return new Response("Nextcloud Status: "+response.status);
-
-}
-
-/* ---------- Zähler ---------- */
-
-if (url.pathname === "/count") {
-
-return new Response(JSON.stringify({count:counter}),{
-headers:{ "content-type":"application/json" }
-});
 
 }
 
