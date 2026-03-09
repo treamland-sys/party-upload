@@ -1,1 +1,138 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Party Galerie</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#1f6f73,#3fa39b);
+color:white;
+text-align:center;
+}
+
+h1{
+padding:20px;
+margin:0;
+}
+
+.gallery{
+
+column-count:3;
+column-gap:12px;
+padding:12px;
+max-width:1200px;
+margin:auto;
+
+}
+
+.gallery img{
+
+width:100%;
+margin-bottom:12px;
+border-radius:12px;
+cursor:pointer;
+transition:transform 0.2s;
+
+}
+
+.gallery img:hover{
+transform:scale(1.03);
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+.gallery{
+column-count:2;
+}
+
+}
+
+@media(max-width:500px){
+
+.gallery{
+column-count:1;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>📸 Party Galerie</h1>
+
+<div class="gallery" id="gallery"></div>
+
+<script>
+
+const shareToken = "X7fK3RMRtgo8FbA";
+
+const webdav =
+"https://nx70782.your-storageshare.de/public.php/dav/files/"+shareToken+"/";
+
+async function loadImages(){
+
+const response = await fetch(webdav,{
+method:"PROPFIND",
+headers:{
+Depth:"1"
+}
+});
+
+const text = await response.text();
+
+const parser = new DOMParser();
+const xml = parser.parseFromString(text,"text/xml");
+
+const responses = [...xml.getElementsByTagName("d:response")];
+
+const files = responses.map(r=>{
+
+const href = r.getElementsByTagName("d:href")[0].textContent;
+const modified = r.getElementsByTagName("d:getlastmodified")[0]?.textContent;
+
+return {href,modified};
+
+}).filter(f=>f.href.match(/\.(jpg|jpeg|png|webp)$/i));
+
+files.sort((a,b)=>new Date(b.modified)-new Date(a.modified));
+
+const gallery = document.getElementById("gallery");
+
+files.forEach(file=>{
+
+const img=document.createElement("img");
+
+img.src=file.href;
+
+img.onclick=()=>{
+
+window.open(file.href,"_blank");
+
+};
+
+gallery.appendChild(img);
+
+});
+
+}
+
+loadImages();
+
+</script>
+
+</body>
+</html>
 
