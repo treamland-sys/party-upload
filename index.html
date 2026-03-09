@@ -4,128 +4,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>40. Geburtstag – Fotos teilen</title>
+<title>🎉 Party Fotos</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
 body{
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
-background-image:url("https://images.unsplash.com/photo-1530103862676-de8c9debad1d");
-background-size:cover;
-background-position:center;
-min-height:100vh;
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#ff7a5c,#ffb56b);
+height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
-color:white;
 text-align:center;
-}
-
-.overlay{
-background:rgba(0,0,0,0.55);
-width:100%;
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:20px;
+overflow:hidden;
+color:white;
 }
 
 .card{
-background:rgba(255,255,255,0.12);
-border-radius:22px;
-padding:50px 40px;
-max-width:520px;
-width:100%;
-box-shadow:0 20px 60px rgba(0,0,0,0.4);
-}
-
-.icon{
-font-size:60px;
-margin-bottom:10px;
+background:rgba(255,255,255,0.15);
+padding:40px;
+border-radius:20px;
+width:90%;
+max-width:420px;
+box-shadow:0 20px 60px rgba(0,0,0,0.3);
+backdrop-filter:blur(6px);
 }
 
 h1{
-font-size:40px;
-margin-bottom:15px;
-}
-
-p{
-font-size:20px;
-line-height:1.5;
-margin-bottom:35px;
+margin-top:0;
+font-size:32px;
 }
 
 .button{
-display:inline-block;
-background:#ffd166;
-color:#333;
-padding:18px 36px;
+display:block;
+margin:18px auto;
+padding:18px 28px;
+background:white;
+color:#ff5e62;
 font-size:22px;
-border-radius:14px;
-text-decoration:none;
 font-weight:bold;
-transition:all 0.2s ease;
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
+border-radius:14px;
+cursor:pointer;
+text-decoration:none;
 }
 
-.button:hover{
-transform:scale(1.05);
+input{
+display:none;
 }
 
-.footer{
-margin-top:25px;
-font-size:14px;
-opacity:0.85;
+#status{
+margin-top:20px;
+font-size:16px;
 }
 
-/* -------- MOBILE OPTIMIERUNG -------- */
+/* Luftballons */
 
-@media (max-width:600px){
-
-.card{
-padding:35px 25px;
+.balloon{
+position:absolute;
+bottom:-120px;
+width:60px;
+height:80px;
+border-radius:50%;
+opacity:0.7;
+animation:float 14s infinite ease-in;
 }
 
-h1{
-font-size:30px;
+.balloon:after{
+content:"";
+position:absolute;
+width:2px;
+height:60px;
+background:white;
+left:50%;
+top:80px;
 }
 
-p{
-font-size:18px;
-}
-
-.button{
-font-size:20px;
-padding:16px 28px;
-width:100%;
-}
-
+@keyframes float{
+0%{transform:translateY(0)}
+100%{transform:translateY(-120vh)}
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="overlay">
-
 <div class="card">
 
-<div class="icon">🎉</div>
+<h1>🎉 Party Fotos</h1>
 
-<h1>Ellis 40. Geburtstag</h1>
-
-<p>
-Schön, dass du mitfeierst!<br><br>
-Lade hier deine schönsten Fotos und Videos von der Party hoch,
-damit wir die besten Erinnerungen sammeln können.
 <label class="button">
 📸 Fotos hochladen
 <input type="file" id="fileInput" multiple>
@@ -209,7 +180,3 @@ xhr.send(file);
 
 </body>
 </html>
-
-
-
-
