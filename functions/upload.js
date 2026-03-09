@@ -34,21 +34,28 @@ return new Response("Nextcloud Status: "+response.status);
 
 if (url.pathname === "/count") {
 
+if (url.pathname === "/count") {
+
 const response = await fetch(baseUrl, {
 
 method:"PROPFIND",
 
 headers:{
 "Authorization":"Basic "+btoa(token+":"),
-"Depth":"1"
-}
+"Depth":"1",
+"Content-Type":"application/xml"
+},
+
+body:`<?xml version="1.0"?> <d:propfind xmlns:d="DAV:"> <d:prop> <d:getcontentlength/> </d:prop> </d:propfind>`
 
 });
 
 const text = await response.text();
 
+/* Dateien zählen */
+
 const matches = text.match(/<d:response>/g);
-const count = matches ? matches.length-1 : 0;
+const count = matches ? matches.length - 1 : 0;
 
 return new Response(JSON.stringify({count:count}),{
 headers:{ "content-type":"application/json" }
@@ -56,6 +63,8 @@ headers:{ "content-type":"application/json" }
 
 }
 
+
 return new Response("Worker läuft");
 
 }
+
