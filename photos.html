@@ -2,36 +2,33 @@
 
 <html lang="de">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>📸 Party Galerie</title>
 
 <style>
 
 body{
 margin:0;
-font-family:Arial,Helvetica,sans-serif;
+font-family:Arial, Helvetica, sans-serif;
 background:linear-gradient(135deg,#1f6f73,#3fa39b);
 color:white;
 text-align:center;
 }
 
 h1{
-margin:0;
 padding:20px;
+margin:0;
 }
 
 .download-btn{
 background:#ffd54f;
 border:none;
-padding:14px 26px;
+padding:14px 24px;
 border-radius:12px;
-font-size:16px;
 font-weight:bold;
 cursor:pointer;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
 .gallery{
@@ -54,24 +51,17 @@ border-radius:12px;
 cursor:pointer;
 }
 
-.photo.selected img{
-outline:6px solid #ffd54f;
+.photo input{
+position:absolute;
+top:10px;
+left:10px;
+width:22px;
+height:22px;
+cursor:pointer;
 }
 
-.checkbox{
-position:absolute;
-top:8px;
-left:8px;
-width:26px;
-height:26px;
-background:white;
-border-radius:6px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:16px;
-color:black;
-cursor:pointer;
+.photo.selected img{
+outline:6px solid #ffd54f;
 }
 
 @media(max-width:900px){
@@ -98,7 +88,7 @@ z-index:9999;
 .viewer img{
 max-width:90%;
 max-height:90%;
-border-radius:12px;
+border-radius:10px;
 }
 
 </style>
@@ -121,16 +111,16 @@ let selected=[];
 
 async function loadImages(){
 
-const res=await fetch("/gallery");
-const images=await res.json();
+const res = await fetch("/gallery");
+const images = await res.json();
 
 const gallery=document.getElementById("gallery");
 gallery.innerHTML="";
 
 images.reverse().forEach(path=>{
 
-const filename=path.split("/").pop();
-const url="/image?file="+filename;
+const filename = path.split("/").pop();
+const url = "/image?file=" + filename;
 
 const container=document.createElement("div");
 container.className="photo";
@@ -138,62 +128,50 @@ container.className="photo";
 const img=document.createElement("img");
 img.src=url;
 
-const box=document.createElement("div");
-box.className="checkbox";
-box.innerHTML="✓";
+const checkbox=document.createElement("input");
+checkbox.type="checkbox";
 
-/* Bild Klick = Vollbild */
+/* Auswahl */
 
-img.onclick=(e)=>{
-e.stopPropagation();
-openViewer(url);
-};
+checkbox.onchange=()=>{
 
-/* Checkbox Klick = Auswahl */
-
-box.onclick=(e)=>{
-e.stopPropagation();
-toggleSelect(container,url);
-};
-
-container.appendChild(img);
-container.appendChild(box);
-
-gallery.appendChild(container);
-
-});
-
-}
-
-function toggleSelect(container,url){
-
-if(container.classList.contains("selected")){
-
-container.classList.remove("selected");
-selected=selected.filter(i=>i!==url);
-
-}else{
+if(checkbox.checked){
 
 container.classList.add("selected");
 selected.push(url);
 
-}
+}else{
+
+container.classList.remove("selected");
+selected=selected.filter(i=>i!==url);
 
 }
 
-function openViewer(url){
+};
+
+/* Bildklick = Vollbild */
+
+img.onclick=()=>{
 
 const viewer=document.createElement("div");
 viewer.className="viewer";
 
-const img=document.createElement("img");
-img.src=url;
+const big=document.createElement("img");
+big.src=url;
 
-viewer.appendChild(img);
-
+viewer.appendChild(big);
 viewer.onclick=()=>viewer.remove();
 
 document.body.appendChild(viewer);
+
+};
+
+container.appendChild(img);
+container.appendChild(checkbox);
+
+gallery.appendChild(container);
+
+});
 
 }
 
