@@ -61,54 +61,22 @@ const token = "X7fK3RMRtgo8FbA";
 
 /* WebDAV Pfad */
 
-const webdav =
-"https://nx70782.your-storageshare.de/public.php/webdav/";
-
-/* Dateien laden */
-
 async function loadImages(){
 
-const res = await fetch(webdav,{
-method:"PROPFIND",
-headers:{
-Authorization:"Basic "+btoa(token+":"),
-Depth:"1"
-}
-});
+const res = await fetch("/gallery");
+const images = await res.json();
 
-const text = await res.text();
-
-const parser = new DOMParser();
-const xml = parser.parseFromString(text,"text/xml");
-
-const responses=[...xml.getElementsByTagName("d:response")];
-
-const files = responses.map(r=>{
-
-const href=r.getElementsByTagName("d:href")[0].textContent;
-const modified=r.getElementsByTagName("d:getlastmodified")[0]?.textContent;
-
-return {href,modified};
-
-}).filter(f=>f.href.match(/\.(jpg|jpeg|png|webp)$/i));
-
-/* neueste zuerst */
-
-files.sort((a,b)=>new Date(b.modified)-new Date(a.modified));
-
-const gallery=document.getElementById("gallery");
+const gallery = document.getElementById("gallery");
 
 gallery.innerHTML="";
 
-files.forEach(file=>{
+images.reverse().forEach(src=>{
 
 let img=document.createElement("img");
 
-img.src=file.href;
+img.src=src;
 
-img.onclick=()=>{
-window.open(file.href,"_blank");
-};
+img.onclick=()=>window.open(src);
 
 gallery.appendChild(img);
 
@@ -117,7 +85,8 @@ gallery.appendChild(img);
 }
 
 loadImages();
-
+setInterval(loadImages,15000);
+  
 /* alle 15 Sekunden aktualisieren */
 
 setInterval(loadImages,15000);
