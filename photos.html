@@ -12,65 +12,93 @@
 
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial,Helvetica,sans-serif;
 background:linear-gradient(135deg,#1f6f73,#3fa39b);
 color:white;
 text-align:center;
 }
 
 h1{
-padding:20px;
 margin:0;
+padding:20px;
 }
 
-/* Masonry Layout */
+.controls{
+margin-bottom:10px;
+}
+
+.download-btn{
+background:#ffd54f;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
 
 .gallery{
-
 column-count:4;
 column-gap:12px;
-
 max-width:1200px;
 margin:auto;
 padding:12px;
-
 }
 
-.gallery img{
-
-width:100%;
+.photo{
+position:relative;
+break-inside:avoid;
 margin-bottom:12px;
+}
+
+.photo img{
+width:100%;
 border-radius:12px;
 cursor:pointer;
-
-break-inside:avoid;
-
-transition:transform 0.2s;
-
 }
 
-.gallery img:hover{
-transform:scale(1.03);
+.photo.selected img{
+outline:6px solid #ffd54f;
 }
 
-/* Tablet */
+.checkbox{
+position:absolute;
+top:8px;
+left:8px;
+width:24px;
+height:24px;
+background:white;
+border-radius:4px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:16px;
+color:black;
+}
 
 @media(max-width:900px){
-
-.gallery{
-column-count:3;
+.gallery{column-count:3;}
 }
-
-}
-
-/* Handy */
 
 @media(max-width:600px){
-
-.gallery{
-column-count:2;
+.gallery{column-count:2;}
 }
 
+.viewer{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.viewer img{
+max-width:90%;
+max-height:90%;
 }
 
 </style>
@@ -81,9 +109,17 @@ column-count:2;
 
 <h1>📸 Party Galerie</h1>
 
+<div class="controls">
+<button class="download-btn" onclick="downloadSelected()">
+⬇ Ausgewählte Fotos herunterladen
+</button>
+</div>
+
 <div class="gallery" id="gallery"></div>
 
 <script>
+
+let selected = [];
 
 async function loadImages(){
 
@@ -98,50 +134,98 @@ images.reverse().forEach(path=>{
 
 const filename = path.split("/").pop();
 
-const img = document.createElement("img");
+const url = "/image?file=" + filename;
 
-img.src = "/image?file=" + filename;
+const container=document.createElement("div");
+container.className="photo";
 
-/* Vollbild */
+const img=document.createElement("img");
+img.src=url;
 
-img.onclick = ()=>{
+const box=document.createElement("div");
+box.className="checkbox";
+box.innerHTML="✓";
+box.style.display="none";
 
-const overlay=document.createElement("div");
+/* Auswahl */
 
-overlay.style.position="fixed";
-overlay.style.top="0";
-overlay.style.left="0";
-overlay.style.width="100%";
-overlay.style.height="100%";
-overlay.style.background="rgba(0,0,0,0.9)";
-overlay.style.display="flex";
-overlay.style.alignItems="center";
-overlay.style.justifyContent="center";
-overlay.style.zIndex="9999";
+container.onclick=(e)=>{
 
-const big=document.createElement("img");
+if(e.target===img){
 
-big.src=img.src;
-big.style.maxWidth="90%";
-big.style.maxHeight="90%";
+openViewer(url);
+return;
 
-overlay.appendChild(big);
+}
 
-overlay.onclick=()=>overlay.remove();
-
-document.body.appendChild(overlay);
+toggleSelect(container,url,box);
 
 };
 
-gallery.appendChild(img);
+container.appendChild(img);
+container.appendChild(box);
+
+gallery.appendChild(container);
+
+});
+
+}
+
+function toggleSelect(container,url,box){
+
+if(container.classList.contains("selected")){
+
+container.classList.remove("selected");
+box.style.display="none";
+selected=selected.filter(i=>i!==url);
+
+}else{
+
+container.classList.add("selected");
+box.style.display="flex";
+selected.push(url);
+
+}
+
+}
+
+function openViewer(url){
+
+const viewer=document.createElement("div");
+viewer.className="viewer";
+
+const img=document.createElement("img");
+img.src=url;
+
+viewer.appendChild(img);
+
+viewer.onclick=()=>viewer.remove();
+
+document.body.appendChild(viewer);
+
+}
+
+function downloadSelected(){
+
+if(selected.length===0){
+alert("Keine Fotos ausgewählt");
+return;
+}
+
+selected.forEach(url=>{
+
+const a=document.createElement("a");
+a.href=url;
+a.download="";
+document.body.appendChild(a);
+a.click();
+a.remove();
 
 });
 
 }
 
 loadImages();
-
-/* automatische Aktualisierung */
 
 setInterval(loadImages,15000);
 
