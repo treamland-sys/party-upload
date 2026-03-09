@@ -1,0 +1,59 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Party Upload</title>
+</head>
+
+<body>
+
+<h2>Party Fotos Upload</h2>
+
+<input type="file" id="fileInput">
+
+<p id="status"></p>
+
+<script>
+
+```html
+<script>
+
+const input = document.getElementById("fileInput");
+const status = document.getElementById("status");
+
+input.addEventListener("change", function(){
+
+let file = input.files[0];
+
+let xhr = new XMLHttpRequest();
+
+xhr.open("POST","/upload");
+
+xhr.setRequestHeader("x-file-name", file.name);
+
+xhr.onload=function(){
+
+status.innerHTML = xhr.responseText;
+
+};
+
+xhr.onerror=function(){
+
+status.innerHTML="Upload Fehler";
+
+};
+
+xhr.send(file);
+
+});
+
+</script>
+```
+
+
+</script>
+
+</body>
+</html>
+```
