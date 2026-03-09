@@ -21,28 +21,47 @@ text-align:center;
 h1{
 margin:0;
 padding:20px;
+font-size:28px;
 }
 
-/* Grid Galerie */
+/* Galerie Layout */
 
 .gallery{
+
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
 gap:12px;
+
 padding:12px;
 max-width:1200px;
 margin:auto;
+
 }
 
+/* Bilder */
+
 .gallery img{
+
 width:100%;
 border-radius:12px;
 cursor:pointer;
+
 transition:transform 0.2s;
+
 }
 
 .gallery img:hover{
 transform:scale(1.05);
+}
+
+/* Mobile */
+
+@media(max-width:600px){
+
+.gallery{
+grid-template-columns:repeat(2,1fr);
+}
+
 }
 
 </style>
@@ -57,10 +76,6 @@ transform:scale(1.05);
 
 <script>
 
-const token = "X7fK3RMRtgo8FbA";
-
-/* WebDAV Pfad */
-
 async function loadImages(){
 
 const res = await fetch("/gallery");
@@ -72,11 +87,12 @@ gallery.innerHTML="";
 
 images.reverse().forEach(src=>{
 
-let img=document.createElement("img");
+const img=document.createElement("img");
 
 img.src=src;
+img.loading="lazy";
 
-img.onclick=()=>window.open(src);
+img.onclick=()=>window.open(src,"_blank");
 
 gallery.appendChild(img);
 
@@ -85,8 +101,7 @@ gallery.appendChild(img);
 }
 
 loadImages();
-setInterval(loadImages,15000);
-  
+
 /* alle 15 Sekunden aktualisieren */
 
 setInterval(loadImages,15000);
