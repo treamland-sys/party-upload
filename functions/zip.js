@@ -1,39 +1,42 @@
+import JSZip from "jszip";
+
 export async function onRequestPost(context) {
 
-const request = context.request;
-const body = await request.json();
+const data = await context.request.json();
+const files = data.files;
 
-const files = body.files;
+const shareToken = "X7fK3RMRtgo8FbA";
 
-let buffers = [];
+const zip = new JSZip();
 
-for(const file of files){
+for (let i = 0; i < files.length; i++) {
 
-const url = "https://party-upload.pages.dev" + file;
+const filename = files[i].split("file=").pop();
 
-const res = await fetch(url);
-const buffer = await res.arrayBuffer();
+const nextcloudURL =
+"https://nx70782.your-storageshare.de/public.php/webdav/" + filename;
 
-buffers.push({
-name: file.split("file=").pop(),
-data: new Uint8Array(buffer)
+const response = await fetch(nextcloudURL,{
+headers:{
+Authorization:"Basic " + btoa(shareToken + ":")
+}
 });
+
+const buffer = await response.arrayBuffer();
+
+zip.file(filename, buffer);
 
 }
 
-/* einfache ZIP Struktur */
-
-const encoder = new TextEncoder();
-let zipParts = [];
-
-buffers.forEach(file=>{
-zipParts.push(file.data);
+const content = await zip.generateAsync({
+type:"uint8array",
+compression:"DEFLATE"
 });
 
-return new Response(new Blob(zipParts),{
+return new Response(content,{
 headers:{
 "Content-Type":"application/zip",
-"Content-Disposition":"attachment; filename=party_fotos.zip"
+"Content-Disposition":'attachment; filename="party_fotos.zip"'
 }
 });
 
