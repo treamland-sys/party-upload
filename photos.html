@@ -29,14 +29,14 @@ margin-top:20px;
 display:flex;
 justify-content:center;
 flex-wrap:wrap;
-gap:10px;
+gap:12px;
 margin-top:15px;
 }
 
 .btn{
 background:#ffd54f;
 border:none;
-padding:14px 20px;
+padding:14px 22px;
 border-radius:12px;
 font-weight:bold;
 cursor:pointer;
@@ -157,15 +157,13 @@ images.reverse().forEach(path=>{
 
 const filename = path.split("/").pop();
 
-/* DIREKTER NEXTCLOUD LINK */
-
-const url = "https://nx70782.your-storageshare.de/public.php/webdav/"+filename+"?download=1";
+const workerURL = "/image?file="+filename;
 
 const container=document.createElement("div");
 container.className="photo";
 
 const img=document.createElement("img");
-img.src="/image?file="+filename;
+img.src=workerURL;
 
 const checkbox=document.createElement("input");
 checkbox.type="checkbox";
@@ -175,12 +173,12 @@ checkbox.onchange=()=>{
 if(checkbox.checked){
 
 container.classList.add("selected");
-selected.push(url);
+selected.push(workerURL);
 
 }else{
 
 container.classList.remove("selected");
-selected=selected.filter(i=>i!==url);
+selected=selected.filter(i=>i!==workerURL);
 
 }
 
@@ -194,7 +192,7 @@ const viewer=document.createElement("div");
 viewer.className="viewer";
 
 const big=document.createElement("img");
-big.src=img.src;
+big.src=workerURL;
 
 viewer.appendChild(big);
 viewer.onclick=()=>viewer.remove();
@@ -215,7 +213,7 @@ gallery.appendChild(container);
 function updateCounter(){
 
 document.getElementById("selectedCount").innerText =
-selected.length + " Fotos ausgewählt";
+selected.length+" Fotos ausgewählt";
 
 }
 
@@ -239,6 +237,7 @@ document.getElementById("newPhotos").innerText =
 localStorage.setItem("photoCount",current);
 
 }
+
 async function downloadSelected(){
 
 if(selected.length===0){
@@ -247,57 +246,57 @@ return;
 }
 
 const status=document.getElementById("zipStatus");
+
 status.innerText="📦 Lade Bilder...";
 
 const zip=new JSZip();
 
-/* alle Bilder gleichzeitig laden */
+for(let i=0;i<selected.length;i++){
 
-const requests = selected.map(async (url,index)=>{
+status.innerText="📦 Lade Bild "+(i+1)+" von "+selected.length;
 
-status.innerText =
-"📦 Lade Bild "+(index+1)+" von "+selected.length;
-
-const res = await fetch(url);
+const res=await fetch(selected[i]);
 
 if(!res.ok){
-throw new Error("Bild konnte nicht geladen werden");
+alert("Bild konnte nicht geladen werden");
+return;
 }
 
-const blob = await res.blob();
+const blob=await res.blob();
 
-const filename = "foto_"+index+".jpg";
+zip.file("foto_"+(i+1)+".jpg",blob);
 
-zip.file(filename,blob);
-
-});
-
-/* warten bis alle Bilder geladen */
-
-await Promise.all(requests);
+}
 
 status.innerText="📦 Komprimiere Fotos...";
 
-const content = await zip.generateAsync({type:"blob"});
+const content=await zip.generateAsync({type:"blob"});
+
+const url=URL.createObjectURL(content);
 
 const link=document.createElement("a");
-link.href=URL.createObjectURL(content);
+link.href=url;
 link.download="party_fotos.zip";
 
 document.body.appendChild(link);
 link.click();
+
+setTimeout(()=>{
+URL.revokeObjectURL(url);
 link.remove();
+},1000);
 
 status.innerText="✅ Download gestartet";
 
 }
 
-
 loadImages();
 
+/* Galerie aktualisiert automatisch */
 setInterval(loadImages,15000);
 
 </script>
 
 </body>
 </html>
+
