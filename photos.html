@@ -19,8 +19,8 @@ text-align:center;
 }
 
 h1{
-padding:20px;
 margin:0;
+padding:20px;
 }
 
 .controls{
@@ -41,9 +41,9 @@ display:inline-block;
 }
 
 .counter{
-margin-top:5px;
 font-size:14px;
 opacity:0.9;
+margin-top:5px;
 }
 
 .gallery{
@@ -72,7 +72,6 @@ top:10px;
 left:10px;
 width:22px;
 height:22px;
-cursor:pointer;
 }
 
 .photo.selected img{
@@ -117,7 +116,7 @@ border-radius:10px;
 <div class="controls">
 
 <button onclick="downloadSelected()" class="btn">
-⬇ Ausgewählte Fotos herunterladen
+⬇ Ausgewählte Fotos
 </button>
 
 <a href="/" class="btn">
@@ -162,8 +161,6 @@ img.src=url;
 const checkbox=document.createElement("input");
 checkbox.type="checkbox";
 
-/* Auswahl */
-
 checkbox.onchange=()=>{
 
 if(checkbox.checked){
@@ -178,11 +175,9 @@ selected=selected.filter(i=>i!==url);
 
 }
 
-updateSelectedCounter();
+updateCounter();
 
 };
-
-/* Bild Klick = Vollbild */
 
 img.onclick=()=>{
 
@@ -208,33 +203,37 @@ gallery.appendChild(container);
 
 }
 
-function updateSelectedCounter(){
+function updateCounter(){
 
 document.getElementById("selectedCount").innerText =
 selected.length + " Fotos ausgewählt";
 
 }
 
-function downloadSelected(){
+async function downloadSelected(){
 
 if(selected.length===0){
 alert("Keine Fotos ausgewählt");
 return;
 }
 
-selected.forEach(url=>{
+const res = await fetch("/zip",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({files:selected})
+});
+
+const blob = await res.blob();
 
 const link = document.createElement("a");
-link.href = url;
-
-const filename = url.split("file=").pop();
-link.download = filename;
+link.href = URL.createObjectURL(blob);
+link.download = "party_fotos.zip";
 
 document.body.appendChild(link);
 link.click();
-document.body.removeChild(link);
-
-});
+link.remove();
 
 }
 
@@ -260,9 +259,6 @@ localStorage.setItem("photoCount", images.length);
 }
 
 loadImages();
-
-/* Galerie automatisch aktualisieren */
-
 setInterval(loadImages,15000);
 
 </script>
