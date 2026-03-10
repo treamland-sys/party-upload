@@ -239,7 +239,6 @@ document.getElementById("newPhotos").innerText =
 localStorage.setItem("photoCount",current);
 
 }
-
 async function downloadSelected(){
 
 if(selected.length===0){
@@ -248,27 +247,38 @@ return;
 }
 
 const status=document.getElementById("zipStatus");
-
-status.innerText="📦 ZIP wird erstellt...";
+status.innerText="📦 Lade Bilder...";
 
 const zip=new JSZip();
 
-for(let i=0;i<selected.length;i++){
+/* alle Bilder gleichzeitig laden */
 
-status.innerText="📦 Lade Bild "+(i+1)+" von "+selected.length;
+const requests = selected.map(async (url,index)=>{
 
-const response=await fetch(selected[i]);
-const blob=await response.blob();
+status.innerText =
+"📦 Lade Bild "+(index+1)+" von "+selected.length;
 
-const name="foto_"+i+".jpg";
+const res = await fetch(url);
 
-zip.file(name,blob);
-
+if(!res.ok){
+throw new Error("Bild konnte nicht geladen werden");
 }
+
+const blob = await res.blob();
+
+const filename = "foto_"+index+".jpg";
+
+zip.file(filename,blob);
+
+});
+
+/* warten bis alle Bilder geladen */
+
+await Promise.all(requests);
 
 status.innerText="📦 Komprimiere Fotos...";
 
-const content=await zip.generateAsync({type:"blob"});
+const content = await zip.generateAsync({type:"blob"});
 
 const link=document.createElement("a");
 link.href=URL.createObjectURL(content);
@@ -281,6 +291,7 @@ link.remove();
 status.innerText="✅ Download gestartet";
 
 }
+
 
 loadImages();
 
