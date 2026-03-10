@@ -157,7 +157,7 @@ images.reverse().forEach(path=>{
 
 const filename = path.split("/").pop();
 
-const workerURL = "/image?file="+filename;
+const workerURL="/image?file="+filename;
 
 const container=document.createElement("div");
 container.className="photo";
@@ -270,19 +270,34 @@ zip.file("foto_"+(i+1)+".jpg",blob);
 
 status.innerText="📦 Komprimiere Fotos...";
 
-const content = await zip.generateAsync({
+const content=await zip.generateAsync({
 type:"blob",
 mimeType:"application/zip"
 });
 
-const file = new File([content], "party_fotos.zip", {
-type: "application/zip"
+/* echte Datei erzeugen */
+
+const file=new File([content],"party_fotos.zip",{
+type:"application/zip"
 });
 
-const downloadUrl = URL.createObjectURL(file);
+const downloadUrl=URL.createObjectURL(file);
 
-window.location.href = downloadUrl;
-  
+/* iPhone kompatibler Download */
+
+const link=document.createElement("a");
+link.href=downloadUrl;
+link.download="party_fotos.zip";
+link.style.display="none";
+
+document.body.appendChild(link);
+link.click();
+
+setTimeout(()=>{
+URL.revokeObjectURL(downloadUrl);
+link.remove();
+},1000);
+
 status.innerText="✅ Download gestartet";
 
 }
