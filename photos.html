@@ -2,6 +2,7 @@
 
 <html lang="de">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -29,20 +30,19 @@ margin-bottom:10px;
 .btn{
 background:#ffd54f;
 border:none;
-padding:12px 18px;
+padding:12px 20px;
 border-radius:10px;
 font-weight:bold;
 cursor:pointer;
-margin:5px;
+margin:6px;
 text-decoration:none;
 color:black;
 display:inline-block;
 }
 
-.badge{
-display:block;
-margin-top:6px;
-font-size:15px;
+.counter{
+margin-top:5px;
+font-size:14px;
 opacity:0.9;
 }
 
@@ -117,14 +117,18 @@ border-radius:10px;
 <div class="controls">
 
 <button onclick="downloadSelected()" class="btn">
-⬇ Ausgewählte Fotos
+⬇ Ausgewählte Fotos herunterladen
 </button>
 
 <a href="/" class="btn">
 📤 Fotos hochladen
 </a>
 
-<span id="newPhotos" class="badge"></span>
+<div class="counter" id="selectedCount">
+0 Fotos ausgewählt
+</div>
+
+<div class="counter" id="newPhotos"></div>
 
 </div>
 
@@ -174,6 +178,8 @@ selected=selected.filter(i=>i!==url);
 
 }
 
+updateSelectedCounter();
+
 };
 
 /* Bild Klick = Vollbild */
@@ -202,6 +208,13 @@ gallery.appendChild(container);
 
 }
 
+function updateSelectedCounter(){
+
+document.getElementById("selectedCount").innerText =
+selected.length + " Fotos ausgewählt";
+
+}
+
 function downloadSelected(){
 
 if(selected.length===0){
@@ -210,7 +223,17 @@ return;
 }
 
 selected.forEach(url=>{
-window.open(url,"_blank");
+
+const link = document.createElement("a");
+link.href = url;
+
+const filename = url.split("file=").pop();
+link.download = filename;
+
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+
 });
 
 }
