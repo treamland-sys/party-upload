@@ -270,21 +270,16 @@ zip.file("foto_"+(i+1)+".jpg",blob);
 
 status.innerText="📦 Komprimiere Fotos...";
 
-const content=await zip.generateAsync({type:"blob"});
+const content=await zip.generateAsync({
+type:"blob",
+mimeType:"application/zip"
+});
 
 const url=URL.createObjectURL(content);
 
-const link=document.createElement("a");
-link.href=url;
-link.download="party_fotos.zip";
+/* iPhone kompatibler Download */
 
-document.body.appendChild(link);
-link.click();
-
-setTimeout(()=>{
-URL.revokeObjectURL(url);
-link.remove();
-},1000);
+window.location = url;
 
 status.innerText="✅ Download gestartet";
 
@@ -299,4 +294,3 @@ setInterval(loadImages,15000);
 
 </body>
 </html>
-
