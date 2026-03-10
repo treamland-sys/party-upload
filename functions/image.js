@@ -3,6 +3,10 @@ export async function onRequestGet(context) {
 const url = new URL(context.request.url);
 const file = url.searchParams.get("file");
 
+if(!file){
+return new Response("File fehlt", {status:400});
+}
+
 const shareToken = "X7fK3RMRtgo8FbA";
 
 const nextcloudURL =
@@ -10,13 +14,23 @@ const nextcloudURL =
 
 const response = await fetch(nextcloudURL,{
 headers:{
-Authorization:"Basic " + btoa(shareToken + ":")
+Authorization: "Basic " + btoa(shareToken + ":"),
+"Accept": "*/*"
 }
 });
 
-return new Response(response.body,{
+if(!response.ok){
+return new Response("Nextcloud Fehler", {status:500});
+}
+
+/* Bild komplett laden (stabiler als Stream) */
+
+const buffer = await response.arrayBuffer();
+
+return new Response(buffer,{
 headers:{
-"Content-Type": response.headers.get("content-type")
+"Content-Type": response.headers.get("content-type") || "image/jpeg",
+"Cache-Control":"public, max-age=86400"
 }
 });
 
