@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 
 <html lang="de">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>📸 Party Galerie</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 
 <style>
 
@@ -19,31 +22,39 @@ text-align:center;
 }
 
 h1{
-margin:0;
-padding:20px;
+margin-top:20px;
 }
 
 .controls{
-margin-bottom:10px;
+margin-top:10px;
 }
 
 .btn{
 background:#ffd54f;
 border:none;
-padding:12px 20px;
-border-radius:10px;
+padding:14px 22px;
+border-radius:12px;
 font-weight:bold;
 cursor:pointer;
 margin:6px;
-text-decoration:none;
-color:black;
-display:inline-block;
+font-size:16px;
 }
 
 .counter{
+margin-top:6px;
 font-size:14px;
 opacity:0.9;
-margin-top:5px;
+}
+
+#zipStatus{
+margin-top:8px;
+font-size:14px;
+}
+
+#newPhotos{
+margin-top:6px;
+font-size:14px;
+color:#ffe082;
 }
 
 .gallery{
@@ -75,7 +86,7 @@ height:22px;
 }
 
 .photo.selected img{
-outline:6px solid #ffd54f;
+outline:5px solid #ffd54f;
 }
 
 @media(max-width:900px){
@@ -115,8 +126,8 @@ border-radius:10px;
 
 <div class="controls">
 
-<button onclick="downloadSelected()" class="btn">
-⬇ Ausgewählte Fotos herunterladen
+<button class="btn" onclick="downloadSelected()">
+⬇ Ausgewählte Fotos
 </button>
 
 <a href="/" class="btn">
@@ -127,7 +138,9 @@ border-radius:10px;
 0 Fotos ausgewählt
 </div>
 
-<div class="counter" id="newPhotos"></div>
+<div id="newPhotos"></div>
+
+<div id="zipStatus"></div>
 
 </div>
 
@@ -142,7 +155,7 @@ async function loadImages(){
 const res = await fetch("/gallery");
 const images = await res.json();
 
-checkNewPhotos(images);
+checkNewPhotos(images.length);
 
 const gallery=document.getElementById("gallery");
 gallery.innerHTML="";
@@ -210,40 +223,13 @@ selected.length + " Fotos ausgewählt";
 
 }
 
-async function downloadSelected(){
-
-if(selected.length===0){
-alert("Keine Fotos ausgewählt");
-return;
-}
-
-const res = await fetch("/zip",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body: JSON.stringify({files:selected})
-});
-
-const blob = await res.blob();
-
-const link = document.createElement("a");
-link.href = URL.createObjectURL(blob);
-link.download = "party_fotos.zip";
-
-document.body.appendChild(link);
-link.click();
-link.remove();
-
-}
-
-function checkNewPhotos(images){
+function checkNewPhotos(currentCount){
 
 const lastCount = localStorage.getItem("photoCount");
 
 if(lastCount){
 
-const diff = images.length - lastCount;
+const diff = currentCount - lastCount;
 
 if(diff > 0){
 
@@ -254,11 +240,58 @@ document.getElementById("newPhotos").innerText =
 
 }
 
-localStorage.setItem("photoCount", images.length);
+localStorage.setItem("photoCount", currentCount);
+
+}
+
+async function downloadSelected(){
+
+if(selected.length===0){
+alert("Keine Fotos ausgewählt");
+return;
+}
+
+const status=document.getElementById("zipStatus");
+
+status.innerText="📦 ZIP wird erstellt...";
+
+const zip=new JSZip();
+
+for(let i=0;i<selected.length;i++){
+
+status.innerText=
+"📦 Lade Bild "+(i+1)+" von "+selected.length;
+
+const url=selected[i];
+
+const res=await fetch(url);
+const blob=await res.blob();
+
+const filename=url.split("file=").pop();
+
+zip.file(filename,blob);
+
+}
+
+status.innerText="📦 Komprimiere Fotos...";
+
+const content=await zip.generateAsync({type:"blob"});
+
+const link=document.createElement("a");
+link.href=URL.createObjectURL(content);
+link.download="party_fotos.zip";
+
+document.body.appendChild(link);
+link.click();
+link.remove();
+
+status.innerText="✅ Download gestartet";
 
 }
 
 loadImages();
+
+/* Galerie aktualisiert sich automatisch */
 setInterval(loadImages,15000);
 
 </script>
