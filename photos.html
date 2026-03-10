@@ -9,8 +9,6 @@
 
 <title>📸 Party Galerie</title>
 
-<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-
 <style>
 
 body{
@@ -28,9 +26,9 @@ margin-top:20px;
 .controls{
 display:flex;
 justify-content:center;
-flex-wrap:wrap;
 gap:12px;
 margin-top:15px;
+flex-wrap:wrap;
 }
 
 .btn{
@@ -41,8 +39,8 @@ border-radius:12px;
 font-weight:bold;
 cursor:pointer;
 font-size:16px;
-text-decoration:none;
 color:black;
+text-decoration:none;
 }
 
 .info{
@@ -135,8 +133,6 @@ border-radius:10px;
 
 <div class="info" id="newPhotos"></div>
 
-<div class="info" id="zipStatus"></div>
-
 <div class="gallery" id="gallery"></div>
 
 <script>
@@ -156,7 +152,6 @@ gallery.innerHTML="";
 images.reverse().forEach(path=>{
 
 const filename = path.split("/").pop();
-
 const workerURL="/image?file="+filename;
 
 const container=document.createElement("div");
@@ -245,66 +240,36 @@ alert("Keine Fotos ausgewählt");
 return;
 }
 
-const status=document.getElementById("zipStatus");
+const files = selected;
 
-status.innerText="📦 Lade Bilder...";
-
-const zip=new JSZip();
-
-for(let i=0;i<selected.length;i++){
-
-status.innerText="📦 Lade Bild "+(i+1)+" von "+selected.length;
-
-const res=await fetch(selected[i]);
-
-if(!res.ok){
-alert("Bild konnte nicht geladen werden");
-return;
-}
-
-const blob=await res.blob();
-
-zip.file("foto_"+(i+1)+".jpg",blob);
-
-}
-
-status.innerText="📦 Komprimiere Fotos...";
-
-const content=await zip.generateAsync({
-type:"blob",
-mimeType:"application/zip"
+const response = await fetch("/zip",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({files})
 });
 
-/* echte Datei erzeugen */
+const blob = await response.blob();
 
-const file=new File([content],"party_fotos.zip",{
-type:"application/zip"
-});
-
-const downloadUrl=URL.createObjectURL(file);
-
-/* iPhone kompatibler Download */
+const url = URL.createObjectURL(blob);
 
 const link=document.createElement("a");
-link.href=downloadUrl;
+link.href=url;
 link.download="party_fotos.zip";
-link.style.display="none";
 
 document.body.appendChild(link);
 link.click();
 
 setTimeout(()=>{
-URL.revokeObjectURL(downloadUrl);
+URL.revokeObjectURL(url);
 link.remove();
 },1000);
-
-status.innerText="✅ Download gestartet";
 
 }
 
 loadImages();
 
-/* Galerie aktualisiert automatisch */
 setInterval(loadImages,15000);
 
 </script>
