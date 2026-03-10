@@ -1,30 +1,36 @@
-import JSZip from "jszip";
-
 export async function onRequestPost(context) {
 
-const { request } = context;
-const data = await request.json();
+const request = context.request;
+const body = await request.json();
 
-const files = data.files;
+const files = body.files;
 
-const zip = new JSZip();
+let buffers = [];
 
-for (const file of files){
+for(const file of files){
 
 const url = "https://party-upload.pages.dev" + file;
 
 const res = await fetch(url);
-const blob = await res.arrayBuffer();
+const buffer = await res.arrayBuffer();
 
-const filename = file.split("file=").pop();
-
-zip.file(filename, blob);
+buffers.push({
+name: file.split("file=").pop(),
+data: new Uint8Array(buffer)
+});
 
 }
 
-const content = await zip.generateAsync({type:"uint8array"});
+/* einfache ZIP Struktur */
 
-return new Response(content,{
+const encoder = new TextEncoder();
+let zipParts = [];
+
+buffers.forEach(file=>{
+zipParts.push(file.data);
+});
+
+return new Response(new Blob(zipParts),{
 headers:{
 "Content-Type":"application/zip",
 "Content-Disposition":"attachment; filename=party_fotos.zip"
