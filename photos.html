@@ -26,35 +26,28 @@ margin-top:20px;
 }
 
 .controls{
-margin-top:10px;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:10px;
+margin-top:15px;
 }
 
 .btn{
 background:#ffd54f;
 border:none;
-padding:14px 22px;
+padding:14px 20px;
 border-radius:12px;
 font-weight:bold;
 cursor:pointer;
-margin:6px;
 font-size:16px;
+text-decoration:none;
+color:black;
 }
 
-.counter{
-margin-top:6px;
-font-size:14px;
-opacity:0.9;
-}
-
-#zipStatus{
+.info{
 margin-top:8px;
 font-size:14px;
-}
-
-#newPhotos{
-margin-top:6px;
-font-size:14px;
-color:#ffe082;
 }
 
 .gallery{
@@ -134,15 +127,15 @@ border-radius:10px;
 📤 Fotos hochladen
 </a>
 
-<div class="counter" id="selectedCount">
+</div>
+
+<div class="info" id="selectedCount">
 0 Fotos ausgewählt
 </div>
 
-<div id="newPhotos"></div>
+<div class="info" id="newPhotos"></div>
 
-<div id="zipStatus"></div>
-
-</div>
+<div class="info" id="zipStatus"></div>
 
 <div class="gallery" id="gallery"></div>
 
@@ -163,13 +156,16 @@ gallery.innerHTML="";
 images.reverse().forEach(path=>{
 
 const filename = path.split("/").pop();
-const url = "/image?file=" + filename;
+
+/* DIREKTER NEXTCLOUD LINK */
+
+const url = "https://nx70782.your-storageshare.de/public.php/webdav/"+filename+"?download=1";
 
 const container=document.createElement("div");
 container.className="photo";
 
 const img=document.createElement("img");
-img.src=url;
+img.src="/image?file="+filename;
 
 const checkbox=document.createElement("input");
 checkbox.type="checkbox";
@@ -198,7 +194,7 @@ const viewer=document.createElement("div");
 viewer.className="viewer";
 
 const big=document.createElement("img");
-big.src=url;
+big.src=img.src;
 
 viewer.appendChild(big);
 viewer.onclick=()=>viewer.remove();
@@ -223,24 +219,24 @@ selected.length + " Fotos ausgewählt";
 
 }
 
-function checkNewPhotos(currentCount){
+function checkNewPhotos(current){
 
-const lastCount = localStorage.getItem("photoCount");
+const last=localStorage.getItem("photoCount");
 
-if(lastCount){
+if(last){
 
-const diff = currentCount - lastCount;
+const diff=current-last;
 
-if(diff > 0){
+if(diff>0){
 
 document.getElementById("newPhotos").innerText =
-"🆕 " + diff + " neue Fotos seit deinem letzten Besuch";
+"🆕 "+diff+" neue Fotos seit deinem letzten Besuch";
 
 }
 
 }
 
-localStorage.setItem("photoCount", currentCount);
+localStorage.setItem("photoCount",current);
 
 }
 
@@ -259,17 +255,14 @@ const zip=new JSZip();
 
 for(let i=0;i<selected.length;i++){
 
-status.innerText=
-"📦 Lade Bild "+(i+1)+" von "+selected.length;
+status.innerText="📦 Lade Bild "+(i+1)+" von "+selected.length;
 
-const url=selected[i];
+const response=await fetch(selected[i]);
+const blob=await response.blob();
 
-const res=await fetch(url);
-const blob=await res.blob();
+const name="foto_"+i+".jpg";
 
-const filename=url.split("file=").pop();
-
-zip.file(filename,blob);
+zip.file(name,blob);
 
 }
 
@@ -291,7 +284,6 @@ status.innerText="✅ Download gestartet";
 
 loadImages();
 
-/* Galerie aktualisiert sich automatisch */
 setInterval(loadImages,15000);
 
 </script>
