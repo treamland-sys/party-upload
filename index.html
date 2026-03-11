@@ -4,59 +4,58 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>🎉 Ellis 40. Geburtstag</title>
 
 <style>
 
 body{
+
 margin:0;
 font-family:Arial, Helvetica, sans-serif;
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
 color:white;
-overflow:hidden;
-
-/* Ballon Hintergrund */
+text-align:center;
 
 background-image:url("https://images.unsplash.com/photo-1513151233558-d860c5398176");
 background-size:cover;
 background-position:center;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+min-height:100vh;
+padding:20px;
+
 }
 
-/* Glass Card */
+/* Glas Karte */
 
 .card{
-
-position:relative;
 
 background:rgba(0,0,0,0.45);
 backdrop-filter:blur(12px);
 
-padding:40px;
 border-radius:20px;
 
-width:90%;
+padding:35px 25px;
+
+width:100%;
 max-width:420px;
 
 box-shadow:0 20px 60px rgba(0,0,0,0.4);
-
-z-index:2;
 
 }
 
 h1{
 margin-top:0;
-font-size:32px;
+font-size:30px;
 }
 
 .subtitle{
 font-size:18px;
-margin-bottom:20px;
+margin-bottom:18px;
 }
 
 .text{
@@ -68,22 +67,40 @@ margin-bottom:25px;
 /* Buttons */
 
 .button{
+
 display:block;
 margin:14px auto;
-padding:18px 28px;
+
+padding:18px;
+
 border-radius:14px;
+
 font-size:20px;
 font-weight:bold;
+
 text-decoration:none;
+
 width:100%;
 max-width:300px;
+
 }
+
+/* Upload pulsierend */
 
 .upload{
 
 background:#ffd54f;
 color:black;
-box-shadow:0 6px 20px rgba(0,0,0,0.3);
+
+animation:pulse 2.5s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{transform:scale(1)}
+50%{transform:scale(1.06)}
+100%{transform:scale(1)}
 
 }
 
@@ -96,7 +113,7 @@ color:black;
 
 .download{
 
-background:#ffffffcc;
+background:#ffffffd6;
 color:black;
 
 }
@@ -109,45 +126,24 @@ opacity:0.9;
 
 }
 
-/* Konfetti */
+/* Mobile Optimierung */
 
-.confetti{
-
-position:absolute;
-width:8px;
-height:8px;
-background:red;
-opacity:0.7;
-animation:fall linear infinite;
-
-}
-
-@keyframes fall{
-
-0%{
-transform:translateY(-10vh) rotate(0deg);
-}
-
-100%{
-transform:translateY(110vh) rotate(360deg);
-}
-
-}
-
-/* Mobile */
-
-@media(max-width:600px){
+@media (max-width:600px){
 
 .card{
-padding:28px;
+padding:28px 18px;
 }
 
 h1{
-font-size:26px;
+font-size:24px;
+}
+
+.subtitle{
+font-size:16px;
 }
 
 .button{
-font-size:18px;
+font-size:17px;
 padding:16px;
 }
 
@@ -168,7 +164,7 @@ Schön, dass du mitfeierst!
 </div>
 
 <div class="text">
-Lade hier deine schönsten Fotos und Videos von der Party hoch,
+Lade hier deine schönsten Fotos von der Party hoch,
 damit wir die besten Erinnerungen sammeln können.
 </div>
 
@@ -183,7 +179,9 @@ damit wir die besten Erinnerungen sammeln können.
 <a class="button download"
 href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
 target="_blank">
+
 📁 Fotos später herunterladen
+
 </a>
 
 <div class="footer">
@@ -192,38 +190,5 @@ Danke fürs Mitfeiern und Teilen der Erinnerungen 🥂
 
 </div>
 
-<script>
-
-/* sanftes Konfetti */
-
-const colors = [
-"#ffd54f",
-"#ff6b6b",
-"#4ecdc4",
-"#6c5ce7",
-"#00d2d3"
-];
-
-for(let i=0;i<40;i++){
-
-const c = document.createElement("div");
-
-c.className="confetti";
-
-c.style.left=Math.random()*100+"vw";
-
-c.style.background=colors[Math.floor(Math.random()*colors.length)];
-
-c.style.animationDuration=5+Math.random()*6+"s";
-
-c.style.animationDelay=Math.random()*5+"s";
-
-document.body.appendChild(c);
-
-}
-
-</script>
-
 </body>
 </html>
-
