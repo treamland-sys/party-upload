@@ -14,8 +14,7 @@
 
 body{
 margin:0;
-font-family:Arial;
-color:white;
+font-family:Arial, Helvetica, sans-serif;
 
 background-image:url("https://images.unsplash.com/photo-1513151233558-d860c5398176");
 background-size:cover;
@@ -28,12 +27,15 @@ justify-content:center;
 align-items:center;
 
 padding:20px;
+color:white;
 }
+
+/* Card */
 
 .card{
 
 background:rgba(0,0,0,0.45);
-backdrop-filter:blur(12px);
+backdrop-filter:blur(10px);
 
 border-radius:20px;
 
@@ -46,21 +48,29 @@ text-align:center;
 
 }
 
-h1{
-margin-top:0;
-font-size:26px;
+/* Buttons Container */
+
+.buttons{
+
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:12px;
+
 }
+
+/* Button */
 
 .button{
 
-display:block;
+display:flex;
+justify-content:center;
+align-items:center;
 
-margin:12px auto;
+width:100%;
+max-width:240px;
 
 padding:14px;
-
-max-width:240px;
-width:100%;
 
 border-radius:12px;
 
@@ -82,12 +92,27 @@ color:black;
 }
 
 .counter{
-margin:10px 0;
+margin:12px 0;
 font-weight:bold;
 }
 
 input{
 display:none;
+}
+
+/* Mobile */
+
+@media (max-width:500px){
+
+.card{
+padding:20px;
+}
+
+.button{
+max-width:200px;
+padding:12px;
+}
+
 }
 
 </style>
@@ -98,15 +123,15 @@ display:none;
 
 <div class="card">
 
-<h1>🎉 Ellis 40. Geburtstag</h1>
+<h2>🎉 Ellis 40. Geburtstag</h2>
 
-<p>
-Lade hier deine schönsten Fotos von der Party hoch.
-</p>
+<p>Lade hier deine schönsten Partyfotos hoch.</p>
 
 <div id="counter" class="counter">
 📸 Fotos werden gezählt...
 </div>
+
+<div class="buttons">
 
 <label class="button upload">
 📸 Fotos hochladen
@@ -119,9 +144,11 @@ Lade hier deine schönsten Fotos von der Party hoch.
 
 </div>
 
+</div>
+
 <script>
 
-/* Counter laden */
+/* Counter */
 
 async function loadCounter(){
 
@@ -129,7 +156,7 @@ const res = await fetch("/count");
 const data = await res.json();
 
 document.getElementById("counter").innerHTML =
-"📸 "+data.count+" Fotos wurden bereits hochgeladen";
+"📸 "+data.count+" Fotos hochgeladen";
 
 }
 
@@ -155,8 +182,7 @@ body:file
 
 confetti({
 particleCount:150,
-spread:80,
-origin:{y:0.6}
+spread:80
 });
 
 loadCounter();
