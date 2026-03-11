@@ -167,10 +167,24 @@ target="_blank">
 
 <script>
 
+let lastImageCount = 0;
+
 async function loadGallery(){
 
 const res = await fetch("/gallery");
-let images = await res.json();
+const images = await res.json();
+
+/* nur aktualisieren wenn neue Bilder */
+
+if(images.length !== lastImageCount){
+
+lastImageCount = images.length;
+
+buildGallery(images);
+
+}
+
+}
 
 /* neueste oben */
 
