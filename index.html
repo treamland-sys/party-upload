@@ -4,9 +4,11 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>🎉 Ellis 40. Geburtstag</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
 
@@ -28,7 +30,7 @@ align-items:center;
 padding:15px;
 }
 
-/* Glas Panel */
+/* Glas Karte */
 
 .card{
 
@@ -37,7 +39,7 @@ backdrop-filter:blur(12px);
 
 border-radius:20px;
 
-padding:28px 20px;
+padding:26px 18px;
 
 width:100%;
 max-width:360px;
@@ -61,10 +63,10 @@ margin-bottom:16px;
 .text{
 font-size:14px;
 line-height:1.5;
-margin-bottom:18px;
+margin-bottom:20px;
 }
 
-/* Button Container */
+/* Buttons */
 
 .buttons{
 
@@ -75,61 +77,66 @@ gap:12px;
 
 }
 
-/* Buttons */
-
 .button{
 
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 
 width:100%;
-max-width:260px;
+max-width:220px;
 
-padding:14px;
+padding:12px;
 
 border-radius:12px;
 
-font-size:16px;
+font-size:15px;
 font-weight:bold;
 
-text-decoration:none;
-
 cursor:pointer;
+text-decoration:none;
 
 }
 
-/* Upload pulsierend */
+/* Upload */
 
 .upload{
 
 background:#ffd54f;
 color:black;
 
-animation:pulse 2.4s infinite;
+animation:pulse 2.3s infinite;
 
 }
 
 @keyframes pulse{
+
 0%{transform:scale(1)}
-50%{transform:scale(1.04)}
+50%{transform:scale(1.05)}
 100%{transform:scale(1)}
+
 }
 
 .gallery{
+
 background:#fff3b0;
 color:black;
+
 }
 
 .download{
+
 background:#ffffffd0;
 color:black;
+
 }
 
 .footer{
-margin-top:18px;
+
+margin-top:16px;
 font-size:13px;
 opacity:0.9;
+
 }
 
 input{
@@ -169,9 +176,7 @@ damit wir die besten Erinnerungen sammeln können.
 <a class="button download"
 href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
 target="_blank">
-
 📁 Fotos später herunterladen
-
 </a>
 
 </div>
@@ -184,11 +189,21 @@ Danke fürs Mitfeiern und Teilen der Erinnerungen 🙌
 
 <script>
 
-/* Datei-Auswahl */
+/* Upload Button */
 
-document.getElementById("fileInput").addEventListener("change",function(){
+const input=document.getElementById("fileInput");
 
-alert("Bitte benutze die Uploadseite für das Hochladen der Fotos.");
+input.addEventListener("change",function(){
+
+if(input.files.length>0){
+
+confetti({
+particleCount:120,
+spread:80,
+origin:{y:0.6}
+});
+
+}
 
 });
 
