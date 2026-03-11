@@ -25,7 +25,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 
-padding:20px;
+padding:15px;
 }
 
 /* Glas Panel */
@@ -37,10 +37,10 @@ backdrop-filter:blur(12px);
 
 border-radius:20px;
 
-padding:30px 20px;
+padding:28px 20px;
 
 width:100%;
-max-width:420px;
+max-width:360px;
 
 box-shadow:0 20px 60px rgba(0,0,0,0.4);
 
@@ -50,18 +50,18 @@ text-align:center;
 
 h1{
 margin-top:0;
-font-size:28px;
+font-size:24px;
 }
 
 .subtitle{
-font-size:17px;
-margin-bottom:18px;
+font-size:16px;
+margin-bottom:16px;
 }
 
 .text{
-font-size:15px;
+font-size:14px;
 line-height:1.5;
-margin-bottom:22px;
+margin-bottom:18px;
 }
 
 /* Button Container */
@@ -71,7 +71,7 @@ margin-bottom:22px;
 display:flex;
 flex-direction:column;
 align-items:center;
-gap:14px;
+gap:12px;
 
 }
 
@@ -84,30 +84,35 @@ justify-content:center;
 align-items:center;
 
 width:100%;
-max-width:280px;
+max-width:260px;
 
-padding:16px 18px;
+padding:14px;
 
-border-radius:14px;
+border-radius:12px;
 
-font-size:18px;
+font-size:16px;
 font-weight:bold;
 
 text-decoration:none;
+
+cursor:pointer;
 
 }
 
 /* Upload pulsierend */
 
 .upload{
+
 background:#ffd54f;
 color:black;
+
 animation:pulse 2.4s infinite;
+
 }
 
 @keyframes pulse{
 0%{transform:scale(1)}
-50%{transform:scale(1.05)}
+50%{transform:scale(1.04)}
 100%{transform:scale(1)}
 }
 
@@ -122,28 +127,13 @@ color:black;
 }
 
 .footer{
-margin-top:20px;
-font-size:14px;
+margin-top:18px;
+font-size:13px;
 opacity:0.9;
 }
 
-/* Mobile Anpassung */
-
-@media(max-width:420px){
-
-.card{
-padding:26px 16px;
-}
-
-.button{
-font-size:17px;
-padding:14px;
-}
-
-h1{
-font-size:24px;
-}
-
+input{
+display:none;
 }
 
 </style>
@@ -161,15 +151,16 @@ Schön, dass du mitfeierst!
 </div>
 
 <div class="text">
-Lade hier deine schönsten Fotos von der Party hoch,
+Lade hier deine schönsten Fotos und Videos von der Party hoch,
 damit wir die besten Erinnerungen sammeln können.
 </div>
 
 <div class="buttons">
 
-<a class="button upload" href="/">
+<label class="button upload">
 📸 Fotos hochladen
-</a>
+<input type="file" id="fileInput" multiple>
+</label>
 
 <a class="button gallery" href="/photos.html">
 🖼 Galerie ansehen
@@ -190,6 +181,18 @@ Danke fürs Mitfeiern und Teilen der Erinnerungen 🙌
 </div>
 
 </div>
+
+<script>
+
+/* Datei-Auswahl */
+
+document.getElementById("fileInput").addEventListener("change",function(){
+
+alert("Bitte benutze die Uploadseite für das Hochladen der Fotos.");
+
+});
+
+</script>
 
 </body>
 </html>
