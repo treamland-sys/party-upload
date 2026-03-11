@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>🎉 Ellis 40. Geburtstag</title>
 
@@ -14,7 +13,7 @@
 
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial;
 color:white;
 
 background-image:url("https://images.unsplash.com/photo-1513151233558-d860c5398176");
@@ -26,11 +25,8 @@ min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-
 padding:15px;
 }
-
-/* Glas Karte */
 
 .card{
 
@@ -39,104 +35,49 @@ backdrop-filter:blur(12px);
 
 border-radius:20px;
 
-padding:26px 18px;
+padding:25px;
 
 width:100%;
 max-width:360px;
 
-box-shadow:0 20px 60px rgba(0,0,0,0.4);
-
 text-align:center;
-
 }
 
 h1{
-margin-top:0;
 font-size:24px;
-}
-
-.subtitle{
-font-size:16px;
-margin-bottom:16px;
-}
-
-.text{
-font-size:14px;
-line-height:1.5;
-margin-bottom:20px;
-}
-
-/* Buttons */
-
-.buttons{
-
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:12px;
-
+margin-top:0;
 }
 
 .button{
 
-display:flex;
-align-items:center;
-justify-content:center;
-
-width:100%;
-max-width:220px;
-
+display:block;
+margin:12px auto;
 padding:12px;
+
+max-width:220px;
+width:100%;
 
 border-radius:12px;
 
-font-size:15px;
 font-weight:bold;
-
-cursor:pointer;
 text-decoration:none;
 
+cursor:pointer;
 }
-
-/* Upload */
 
 .upload{
-
 background:#ffd54f;
 color:black;
-
-animation:pulse 2.3s infinite;
-
-}
-
-@keyframes pulse{
-
-0%{transform:scale(1)}
-50%{transform:scale(1.05)}
-100%{transform:scale(1)}
-
 }
 
 .gallery{
-
 background:#fff3b0;
 color:black;
-
 }
 
 .download{
-
 background:#ffffffd0;
 color:black;
-
-}
-
-.footer{
-
-margin-top:16px;
-font-size:13px;
-opacity:0.9;
-
 }
 
 input{
@@ -144,7 +85,6 @@ display:none;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -153,16 +93,9 @@ display:none;
 
 <h1>🎉 Ellis 40. Geburtstag</h1>
 
-<div class="subtitle">
-Schön, dass du mitfeierst!
-</div>
-
-<div class="text">
-Lade hier deine schönsten Fotos und Videos von der Party hoch,
-damit wir die besten Erinnerungen sammeln können.
-</div>
-
-<div class="buttons">
+<p>
+Lade hier deine schönsten Fotos von der Party hoch.
+</p>
 
 <label class="button upload">
 📸 Fotos hochladen
@@ -181,29 +114,28 @@ target="_blank">
 
 </div>
 
-<div class="footer">
-Danke fürs Mitfeiern und Teilen der Erinnerungen 🙌
-</div>
-
-</div>
-
 <script>
-
-/* Upload Button */
 
 const input=document.getElementById("fileInput");
 
-input.addEventListener("change",function(){
+input.addEventListener("change", async function(){
 
-if(input.files.length>0){
+for(const file of input.files){
 
-confetti({
-particleCount:120,
-spread:80,
-origin:{y:0.6}
+await fetch("/upload",{
+method:"POST",
+headers:{
+"x-file-name":file.name
+},
+body:file
 });
 
 }
+
+confetti({
+particleCount:120,
+spread:80
+});
 
 });
 
