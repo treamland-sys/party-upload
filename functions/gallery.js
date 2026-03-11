@@ -14,8 +14,6 @@ Depth: "1"
 
 const xml = await response.text();
 
-/* Bilder suchen */
-
 const files = [];
 
 const regex = /<d:href>(.*?)<\/d:href>/g;
@@ -27,11 +25,9 @@ while ((match = regex.exec(xml)) !== null) {
 let file = decodeURIComponent(match[1]);
 
 if (
-file.endsWith(".jpg") ||
-file.endsWith(".jpeg") ||
-file.endsWith(".png") ||
-file.endsWith(".JPG") ||
-file.endsWith(".PNG")
+file.toLowerCase().endsWith(".jpg") ||
+file.toLowerCase().endsWith(".jpeg") ||
+file.toLowerCase().endsWith(".png")
 ) {
 
 let name = file.split("/").pop();
@@ -42,12 +38,12 @@ files.push(name);
 
 }
 
-/* Neueste zuerst */
+/* NEUESTE ZUERST */
 
-files.sort((a,b) => {
-const tA = parseInt(a.split("_")[0]);
-const tB = parseInt(b.split("_")[0]);
-return tB - tA;
+files.sort((a,b)=> b.localeCompare(a, undefined, {numeric:true}));
+
+return new Response(JSON.stringify(files),{
+headers:{ "Content-Type":"application/json" }
 });
 
 }
