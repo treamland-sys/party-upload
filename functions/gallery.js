@@ -44,10 +44,10 @@ files.push(name);
 
 /* Neueste zuerst */
 
-files.sort().reverse();
-
-return new Response(JSON.stringify(files), {
-headers: { "Content-Type": "application/json" }
+files.sort((a,b) => {
+const tA = parseInt(a.split("_")[0]);
+const tB = parseInt(b.split("_")[0]);
+return tB - tA;
 });
 
 }
