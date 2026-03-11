@@ -4,110 +4,145 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>🎉 Ellis 40. Geburtstag</title>
+<title>Ellis 40. Geburtstag</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
 
-body{
-margin:0;
-font-family:Arial, Helvetica, sans-serif;
-color:white;
+*{
+box-sizing:border-box;
+}
 
-background-image:url("https://images.unsplash.com/photo-1513151233558-d860c5398176");
+body{
+
+margin:0;
+font-family:"Poppins",sans-serif;
+
+background:
+linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.45)),
+url("https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1600");
+
 background-size:cover;
 background-position:center;
 
-min-height:100vh;
+height:100vh;
 
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 
-padding:15px;
+color:white;
+text-align:center;
+
+padding:20px;
+
 }
-
-/* Glas Karte */
 
 .card{
 
-background:rgba(0,0,0,0.45);
-backdrop-filter:blur(12px);
+background:rgba(20,50,55,0.85);
 
-border-radius:20px;
+backdrop-filter:blur(6px);
 
-padding:26px 18px;
+padding:35px 30px;
 
+border-radius:25px;
+
+max-width:420px;
 width:100%;
-max-width:360px;
 
-box-shadow:0 20px 60px rgba(0,0,0,0.4);
-
-text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,0.5);
 
 }
 
-h1{
-margin-top:0;
-font-size:24px;
+h2{
+
+font-size:28px;
+margin-bottom:10px;
+
 }
 
-.subtitle{
+p{
+
+line-height:1.6;
 font-size:16px;
-margin-bottom:16px;
+margin-bottom:18px;
+
 }
 
-.text{
-font-size:14px;
-line-height:1.5;
+#counter{
+
 margin-bottom:20px;
-}
-
-/* Buttons */
-
-.buttons{
-
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:12px;
+font-size:16px;
+opacity:0.9;
 
 }
 
 .button{
 
-display:flex;
-align-items:center;
-justify-content:center;
+display:block;
 
 width:100%;
-max-width:220px;
+max-width:320px;
 
-padding:12px;
+margin:10px auto;
 
-border-radius:12px;
+padding:16px;
 
-font-size:15px;
-font-weight:bold;
+border-radius:14px;
+
+font-size:18px;
+font-weight:600;
+
+text-decoration:none;
 
 cursor:pointer;
-text-decoration:none;
+
+transition:all 0.25s ease;
 
 }
 
-/* Upload */
+/* Upload Button */
 
 .upload{
 
-background:#ffd54f;
-color:black;
+background:#ffd43b;
+color:#222;
 
-animation:pulse 2.3s infinite;
+animation:pulse 2s infinite;
 
 }
+
+.upload:hover{
+
+transform:scale(1.05);
+
+}
+
+/* Galerie */
+
+.gallery{
+
+background:#f6e8a5;
+color:#333;
+
+}
+
+/* Download */
+
+.download{
+
+background:#d9d9d9;
+color:#333;
+
+}
+
+/* pulsieren */
 
 @keyframes pulse{
 
@@ -117,25 +152,46 @@ animation:pulse 2.3s infinite;
 
 }
 
-.gallery{
+/* Upload Balken */
 
-background:#fff3b0;
-color:black;
+.progress{
+
+margin-top:18px;
+
+background:rgba(255,255,255,0.25);
+
+height:12px;
+
+border-radius:10px;
+
+overflow:hidden;
 
 }
 
-.download{
+.bar{
 
-background:#ffffffd0;
-color:black;
+width:0%;
+height:100%;
+
+background:#22c55e;
+
+transition:width 0.3s;
+
+}
+
+#status{
+
+margin-top:10px;
+font-size:14px;
 
 }
 
 .footer{
 
-margin-top:16px;
-font-size:13px;
+margin-top:18px;
+font-size:14px;
 opacity:0.9;
+line-height:1.6;
 
 }
 
@@ -143,57 +199,111 @@ input{
 display:none;
 }
 
+/* Mobile */
+
+@media (max-width:600px){
+
+.card{
+
+padding:28px 22px;
+
+}
+
+h2{
+font-size:24px;
+}
+
+p{
+font-size:15px;
+}
+
+.button{
+
+font-size:17px;
+padding:15px;
+
+}
+
+}
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="card">
 
-<h1>🎉 Ellis 40. Geburtstag</h1>
+<h2>🎉 Ellis 40. Geburtstag</h2>
 
-<div class="subtitle">
+<p>
 Schön, dass du mitfeierst!
-</div>
+</p>
 
-<div class="text">
-Lade hier deine schönsten Fotos von der Party hoch,
-damit wir die besten Erinnerungen sammeln können.
+<p>
 
-<div id="counter" class="counter">
-📸 Fotos werden gezählt...
-</div>
+Lade hier deine schönsten Fotos und Videos
+von der Party hoch, damit wir die besten
+Erinnerungen sammeln können.
 
-<div class="buttons">
+</p>
+
+<div id="counter">📸 Fotos werden gezählt...</div>
 
 <label class="button upload">
+
 📸 Fotos hochladen
+
 <input type="file" id="fileInput" multiple>
+
 </label>
 
-<a class="button gallery" href="/photos.html">
+
+<a class="button gallery" href="/gallery.html">
+
 🖼 Galerie ansehen
+
 </a>
+
 
 <a class="button download"
 href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
 target="_blank">
+
 📁 Fotos später herunterladen
+
 </a>
 
+
+<div id="status"></div>
+
+
+<div class="progress">
+
+<div class="bar" id="bar"></div>
+
 </div>
+
 
 <div class="footer">
+
 Danke fürs Mitfeiern und Teilen der Erinnerungen 🙌
+
 </div>
 
 </div>
+
+
 
 <script>
 
+/* Foto Counter */
 
 async function loadCounter(){
+
+try{
 
 const res = await fetch("/count");
 const data = await res.json();
@@ -201,39 +311,90 @@ const data = await res.json();
 document.getElementById("counter").innerHTML =
 "📸 "+data.count+" Fotos hochgeladen";
 
+}catch(e){
+
+document.getElementById("counter").innerHTML =
+"📸 Fotos werden gesammelt";
+
+}
+
 }
 
 loadCounter();
+
+
+
+/* Upload */
 
 const input=document.getElementById("fileInput");
 
+const bar=document.getElementById("bar");
+const status=document.getElementById("status");
+
+
 input.addEventListener("change", async function(){
 
-for(const file of input.files){
+const files=input.files;
 
-await fetch("/upload",{
-method:"POST",
-headers:{
-"x-file-name":file.name
-},
-body:file
-});
+for(let file of files){
+
+status.innerHTML="Upload läuft...";
+
+let xhr=new XMLHttpRequest();
+
+xhr.open("POST","/upload");
+
+xhr.setRequestHeader("x-file-name",file.name);
+
+xhr.upload.onprogress=function(e){
+
+if(e.lengthComputable){
+
+let percent=(e.loaded/e.total)*100;
+bar.style.width=percent+"%";
 
 }
 
+};
+
+xhr.onload=function(){
+
+status.innerHTML="Upload erfolgreich 🎉";
+
 confetti({
-particleCount:150,
-spread:80
+
+particleCount:140,
+spread:70,
+origin:{y:0.6}
+
 });
 
+bar.style.width="100%";
+
+setTimeout(()=>{
+
+bar.style.width="0%";
+
+},1200);
+
 loadCounter();
+
+};
+
+xhr.onerror=function(){
+
+status.innerHTML="Upload Fehler";
+
+};
+
+xhr.send(file);
+
+}
 
 });
 
 </script>
 
 </body>
+
 </html>
-
-
-
