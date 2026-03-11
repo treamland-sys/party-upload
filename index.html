@@ -127,25 +127,36 @@ height:42px;
 
 <div class="card">
 
-<h2>🎉 Ellis 40. Geburtstag</h2>
+<h1>🎉 Ellis 40. Geburtstag</h1>
 
-<p>Lade hier deine schönsten Partyfotos hoch.</p>
-
-<div id="counter" class="counter">
-📸 Fotos werden gezählt...
+<div class="subtitle">
+Schön, dass du mitfeierst!
 </div>
 
-<div class="buttons">
+<div class="description">
+Lade hier deine schönsten Fotos und Videos von der Party hoch,
+damit wir die besten Erinnerungen sammeln können.
+</div>
 
-<label class="button upload">
+<div id="counter">📸 Fotos werden gezählt...</div>
+
+<label class="upload-btn">
 📸 Fotos hochladen
-<input type="file" id="fileInput" multiple>
+<input type="file" id="fileInput" accept="image/*" multiple>
 </label>
 
-<a class="button gallery" href="/photos.html">
-🖼 Galerie ansehen
+<a class="gallery-btn" href="photos.html">
+🖼 Fotos ansehen
 </a>
 
+<div id="status"></div>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div class="footer">
+Danke fürs Mitfeiern und Teilen der Erinnerungen 🥂
 </div>
 
 </div>
@@ -193,3 +204,4 @@ loadCounter();
 
 </body>
 </html>
+
