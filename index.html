@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
 
 <meta charset="UTF-8">
@@ -25,7 +26,8 @@ min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-padding:15px;
+
+padding:20px;
 }
 
 .card{
@@ -38,23 +40,26 @@ border-radius:20px;
 padding:25px;
 
 width:100%;
-max-width:360px;
+max-width:380px;
 
 text-align:center;
+
 }
 
 h1{
-font-size:24px;
 margin-top:0;
+font-size:26px;
 }
 
 .button{
 
 display:block;
-margin:12px auto;
-padding:12px;
 
-max-width:220px;
+margin:12px auto;
+
+padding:14px;
+
+max-width:240px;
 width:100%;
 
 border-radius:12px;
@@ -63,6 +68,7 @@ font-weight:bold;
 text-decoration:none;
 
 cursor:pointer;
+
 }
 
 .upload{
@@ -75,9 +81,9 @@ background:#fff3b0;
 color:black;
 }
 
-.download{
-background:#ffffffd0;
-color:black;
+.counter{
+margin:10px 0;
+font-weight:bold;
 }
 
 input{
@@ -85,6 +91,7 @@ display:none;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -97,6 +104,10 @@ display:none;
 Lade hier deine schönsten Fotos von der Party hoch.
 </p>
 
+<div id="counter" class="counter">
+📸 Fotos werden gezählt...
+</div>
+
 <label class="button upload">
 📸 Fotos hochladen
 <input type="file" id="fileInput" multiple>
@@ -106,15 +117,25 @@ Lade hier deine schönsten Fotos von der Party hoch.
 🖼 Galerie ansehen
 </a>
 
-<a class="button download"
-href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
-target="_blank">
-📁 Fotos später herunterladen
-</a>
-
 </div>
 
 <script>
+
+/* Counter laden */
+
+async function loadCounter(){
+
+const res = await fetch("/count");
+const data = await res.json();
+
+document.getElementById("counter").innerHTML =
+"📸 "+data.count+" Fotos wurden bereits hochgeladen";
+
+}
+
+loadCounter();
+
+/* Upload */
 
 const input=document.getElementById("fileInput");
 
@@ -133,9 +154,12 @@ body:file
 }
 
 confetti({
-particleCount:120,
-spread:80
+particleCount:150,
+spread:80,
+origin:{y:0.6}
 });
+
+loadCounter();
 
 });
 
