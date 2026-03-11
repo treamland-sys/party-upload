@@ -20,19 +20,24 @@ padding:20px;
 
 h1{
 text-align:center;
-margin-bottom:10px;
 }
 
+/* Top Buttons */
+
 .topbar{
-text-align:center;
-margin-bottom:15px;
+
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap;
+
+margin-bottom:20px;
+
 }
 
 .button{
 
-display:inline-block;
 padding:10px 16px;
-margin:5px;
 
 border-radius:10px;
 
@@ -48,11 +53,14 @@ text-decoration:none;
 background:#fff3b0;
 }
 
+/* Counter */
+
 .counter{
 text-align:center;
 margin-bottom:20px;
-font-size:16px;
 }
+
+/* Masonry */
 
 .gallery{
 
@@ -76,6 +84,7 @@ border-radius:10px;
 cursor:pointer;
 
 transition:0.2s;
+
 }
 
 .photo img:hover{
@@ -96,26 +105,24 @@ height:100%;
 background:black;
 
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 
 }
 
 .viewer img{
-
 max-width:95%;
 max-height:95%;
-
 }
 
 /* Mobile */
 
-@media(max-width:700px){
-
-.gallery{
-column-count:2;
+@media(max-width:900px){
+.gallery{column-count:2;}
 }
 
+@media(max-width:500px){
+.gallery{column-count:1;}
 }
 
 </style>
@@ -128,12 +135,14 @@ column-count:2;
 
 <div class="topbar">
 
-<a class="button" href="/">🏠 Zurück zur Partyseite</a>
+<a class="button" href="/">🏠 Startseite</a>
 
 <a class="button download"
 href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
 target="_blank">
+
 ⬇ Fotos herunterladen
+
 </a>
 
 </div>
@@ -154,16 +163,16 @@ async function loadGallery(){
 const res = await fetch("/gallery");
 let images = await res.json();
 
-/* neueste Fotos oben */
+/* neueste oben */
 
 images = images.sort().reverse();
 
-/* Gesamtzähler */
+/* Counter */
 
 document.getElementById("total").innerHTML =
 "📸 "+images.length+" Fotos insgesamt";
 
-/* neue Fotos seit letztem Besuch */
+/* neue Fotos */
 
 const lastSeen = localStorage.getItem("lastSeenCount") || 0;
 
@@ -183,17 +192,17 @@ const gallery = document.getElementById("gallery");
 images.forEach(path=>{
 
 const file = path.split("/").pop();
+
 const url = "/image?file="+file;
 
 const div = document.createElement("div");
 div.className="photo";
 
 const img = document.createElement("img");
+
 img.src=url;
 
-/* Vollbild */
-
-img.onclick=()=>{
+img.onclick = ()=>{
 
 const viewer=document.createElement("div");
 viewer.className="viewer";
@@ -210,6 +219,7 @@ document.body.appendChild(viewer);
 };
 
 div.appendChild(img);
+
 gallery.appendChild(div);
 
 });
