@@ -4,7 +4,7 @@ const shareToken = "X7fK3RMRtgo8FbA";
 
 const url = "https://nx70782.your-storageshare.de/public.php/dav/files/" + shareToken + "/";
 
-const res = await fetch(url, {
+const response = await fetch(url, {
 method: "PROPFIND",
 headers: {
 Authorization: "Basic " + btoa(shareToken + ":"),
@@ -12,38 +12,41 @@ Depth: "1"
 }
 });
 
-const xml = await res.text();
+const xml = await response.text();
 
-const parser = new DOMParser();
-const doc = parser.parseFromString(xml, "application/xml");
+/* Bilder suchen */
 
-const responses = [...doc.getElementsByTagName("d:response")];
+const files = [];
 
-let files = [];
+const regex = /<d:href>(.*?)<\/d:href>/g;
 
-responses.forEach(node => {
+let match;
 
-const href = node.getElementsByTagName("d:href")[0]?.textContent;
-const modified = node.getElementsByTagName("d:getlastmodified")[0]?.textContent;
+while ((match = regex.exec(xml)) !== null) {
 
-if (!href) return;
+let file = decodeURIComponent(match[1]);
 
-if (href.match(/\.(jpg|jpeg|png|heic)$/i)) {
+if (
+file.endsWith(".jpg") ||
+file.endsWith(".jpeg") ||
+file.endsWith(".png") ||
+file.endsWith(".JPG") ||
+file.endsWith(".PNG")
+) {
 
-files.push({
-path: decodeURIComponent(href),
-date: new Date(modified).getTime()
-});
+let name = file.split("/").pop();
+
+files.push(name);
 
 }
 
-});
+}
 
-/* Sortieren nach Datum (neueste zuerst) */
+/* Neueste zuerst */
 
-files.sort((a,b) => b.date - a.date);
+files.sort().reverse();
 
-return new Response(JSON.stringify(files.map(f => f.path)), {
+return new Response(JSON.stringify(files), {
 headers: { "Content-Type": "application/json" }
 });
 
