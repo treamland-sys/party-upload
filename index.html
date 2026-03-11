@@ -30,8 +30,6 @@ padding:20px;
 color:white;
 }
 
-/* Card */
-
 .card{
 
 background:rgba(0,0,0,0.45);
@@ -48,18 +46,16 @@ text-align:center;
 
 }
 
-/* Buttons Container */
-
 .buttons{
 
 display:flex;
 flex-direction:column;
 align-items:center;
-gap:12px;
+gap:14px;
 
 }
 
-/* Button */
+/* Einheitliche Buttons */
 
 .button{
 
@@ -67,10 +63,8 @@ display:flex;
 justify-content:center;
 align-items:center;
 
-width:100%;
-max-width:240px;
-
-padding:14px;
+width:220px;
+height:44px;
 
 border-radius:12px;
 
@@ -81,9 +75,23 @@ cursor:pointer;
 
 }
 
+/* Upload pulsieren */
+
 .upload{
+
 background:#ffd54f;
 color:black;
+
+animation:pulse 2.5s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{transform:scale(1)}
+50%{transform:scale(1.05)}
+100%{transform:scale(1)}
+
 }
 
 .gallery{
@@ -104,13 +112,9 @@ display:none;
 
 @media (max-width:500px){
 
-.card{
-padding:20px;
-}
-
 .button{
-max-width:200px;
-padding:12px;
+width:200px;
+height:42px;
 }
 
 }
@@ -148,8 +152,6 @@ padding:12px;
 
 <script>
 
-/* Counter */
-
 async function loadCounter(){
 
 const res = await fetch("/count");
@@ -161,8 +163,6 @@ document.getElementById("counter").innerHTML =
 }
 
 loadCounter();
-
-/* Upload */
 
 const input=document.getElementById("fileInput");
 
