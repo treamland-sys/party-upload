@@ -1,172 +1,154 @@
 <!DOCTYPE html>
-
 <html lang="de">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ellis 40. Geburtstag</title>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<title>🎉 Ellis 40. Geburtstag</title>
 
 <style>
 
 body{
 margin:0;
 font-family:Arial, Helvetica, sans-serif;
-min-height:100vh;
-padding:20px 16px;
-
+height:100vh;
 display:flex;
+align-items:center;
 justify-content:center;
-align-items:flex-start;
-
-color:white;
 text-align:center;
-overflow-x:hidden;
+color:white;
+overflow:hidden;
 
-background:
-radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08), transparent 40%),
-radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), transparent 40%),
-linear-gradient(135deg,#1f6f73,#2f8f87,#3fa39b);
+/* Ballon Hintergrund */
+
+background-image:url("https://images.unsplash.com/photo-1513151233558-d860c5398176");
+background-size:cover;
+background-position:center;
 }
 
-/* Karte */
+/* Glass Card */
 
 .card{
-background:rgba(0,0,0,0.35);
+
+position:relative;
+
+background:rgba(0,0,0,0.45);
 backdrop-filter:blur(12px);
 
-padding:30px;
-margin-top:30px;
+padding:40px;
+border-radius:20px;
 
-border-radius:24px;
-
-width:100%;
+width:90%;
 max-width:420px;
 
-box-shadow:0 25px 60px rgba(0,0,0,0.45);
+box-shadow:0 20px 60px rgba(0,0,0,0.4);
+
+z-index:2;
+
 }
 
 h1{
-font-size:28px;
-margin-bottom:8px;
+margin-top:0;
+font-size:32px;
 }
 
 .subtitle{
 font-size:18px;
-opacity:0.9;
-margin-bottom:14px;
+margin-bottom:20px;
 }
 
-.description{
+.text{
 font-size:16px;
 line-height:1.5;
-opacity:0.9;
-margin-bottom:18px;
-}
-
-#counter{
-font-size:18px;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
 /* Buttons */
 
-.upload-btn,
-.gallery-btn{
-
+.button{
 display:block;
-margin:12px auto;
-
-width:230px;
-padding:15px 20px;
-
-font-size:19px;
-font-weight:bold;
-
+margin:14px auto;
+padding:18px 28px;
 border-radius:14px;
+font-size:20px;
+font-weight:bold;
 text-decoration:none;
-cursor:pointer;
-
-text-align:center;
-transition:all 0.2s ease;
-
-}
-
-.upload-btn{
-background:#ffd54f;
-color:#333;
-animation:pulse 2.5s infinite;
-}
-
-.gallery-btn{
-background:#fff3b0;
-color:#333;
-}
-
-.upload-btn:hover,
-.gallery-btn:hover{
-transform:scale(1.04);
-}
-
-@keyframes pulse{
-
-0%{box-shadow:0 0 0 0 rgba(255,213,79,0.6);}
-70%{box-shadow:0 0 0 16px rgba(255,213,79,0);}
-100%{box-shadow:0 0 0 0 rgba(255,213,79,0);}
-
-}
-
-#status{
-margin-top:14px;
-font-size:17px;
-font-weight:500;
-min-height:24px;
-}
-
-/* Fortschrittsbalken */
-
-.progress{
 width:100%;
-background:rgba(255,255,255,0.35);
-border-radius:12px;
-margin-top:14px;
-overflow:hidden;
-height:14px;
+max-width:300px;
 }
 
-.bar{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#22c55e,#4ade80);
-transition:width 0.25s;
+.upload{
+
+background:#ffd54f;
+color:black;
+box-shadow:0 6px 20px rgba(0,0,0,0.3);
+
 }
 
-input{
-display:none;
+.gallery{
+
+background:#fff3b0;
+color:black;
+
+}
+
+.download{
+
+background:#ffffffcc;
+color:black;
+
 }
 
 .footer{
-margin-top:18px;
+
+margin-top:25px;
 font-size:14px;
-opacity:0.85;
+opacity:0.9;
+
+}
+
+/* Konfetti */
+
+.confetti{
+
+position:absolute;
+width:8px;
+height:8px;
+background:red;
+opacity:0.7;
+animation:fall linear infinite;
+
+}
+
+@keyframes fall{
+
+0%{
+transform:translateY(-10vh) rotate(0deg);
+}
+
+100%{
+transform:translateY(110vh) rotate(360deg);
+}
+
 }
 
 /* Mobile */
 
-@media (max-width:500px){
+@media(max-width:600px){
 
-h1{font-size:24px;}
-.subtitle{font-size:17px;}
-.description{font-size:15px;}
+.card{
+padding:28px;
+}
 
-.upload-btn,
-.gallery-btn{
-width:210px;
+h1{
+font-size:26px;
+}
+
+.button{
 font-size:18px;
-padding:14px;
+padding:16px;
 }
 
 }
@@ -185,30 +167,24 @@ padding:14px;
 Schön, dass du mitfeierst!
 </div>
 
-<div class="description">
-Lade hier deine schönsten Fotos von der Party hoch,
+<div class="text">
+Lade hier deine schönsten Fotos und Videos von der Party hoch,
 damit wir die besten Erinnerungen sammeln können.
 </div>
 
-<div id="counter">📸 Fotos werden gezählt...</div>
-
-<label class="upload-btn">
+<a class="button upload" href="/">
 📸 Fotos hochladen
-<input type="file" id="fileInput" accept="image/*" multiple>
-</label>
 </a>
-  
-<<a class="gallery-btn"
-href="/photos.html"
+
+<a class="button gallery" href="/photos.html">
+🖼 Galerie ansehen
+</a>
+
+<a class="button download"
+href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
 target="_blank">
-🖼 Fotos ansehen
+📁 Fotos später herunterladen
 </a>
-
-<div id="status"></div>
-
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
 
 <div class="footer">
 Danke fürs Mitfeiern und Teilen der Erinnerungen 🥂
@@ -218,107 +194,35 @@ Danke fürs Mitfeiern und Teilen der Erinnerungen 🥂
 
 <script>
 
-/* Counter laden */
+/* sanftes Konfetti */
 
-async function loadCounter(){
+const colors = [
+"#ffd54f",
+"#ff6b6b",
+"#4ecdc4",
+"#6c5ce7",
+"#00d2d3"
+];
 
-try{
+for(let i=0;i<40;i++){
 
-const res = await fetch("/count");
-const data = await res.json();
+const c = document.createElement("div");
 
-document.getElementById("counter").innerHTML =
-"📸 "+data.count+" Fotos wurden schon hochgeladen";
+c.className="confetti";
 
-}catch{
+c.style.left=Math.random()*100+"vw";
 
-document.getElementById("counter").innerHTML =
-"📸 Fotos werden gesammelt";
+c.style.background=colors[Math.floor(Math.random()*colors.length)];
 
-}
+c.style.animationDuration=5+Math.random()*6+"s";
 
-}
+c.style.animationDelay=Math.random()*5+"s";
 
-loadCounter();
-
-/* Upload */
-
-const input=document.getElementById("fileInput");
-const status=document.getElementById("status");
-const bar=document.getElementById("bar");
-
-input.addEventListener("change",function(){
-
-let files=input.files;
-
-for(let file of files){
-
-status.innerHTML="Upload läuft...";
-
-let xhr=new XMLHttpRequest();
-
-xhr.open("POST","/upload",true);
-
-xhr.setRequestHeader("x-file-name",file.name);
-
-xhr.upload.onprogress=function(e){
-
-if(e.lengthComputable){
-
-let percent=(e.loaded/e.total)*100;
-bar.style.width=percent+"%";
+document.body.appendChild(c);
 
 }
-
-};
-
-xhr.onload=function(){
-
-if(xhr.status===200){
-
-status.innerHTML="Upload erfolgreich 🎉";
-
-confetti({
-particleCount:160,
-spread:90,
-origin:{y:0.6}
-});
-
-setTimeout(loadCounter,1000);
-
-}else{
-
-status.innerHTML="Upload fehlgeschlagen";
-
-}
-
-bar.style.width="0%";
-
-};
-
-xhr.onerror=function(){
-
-status.innerHTML="Upload Fehler";
-bar.style.width="0%";
-
-};
-
-xhr.send(file);
-
-}
-
-input.value="";
-
-});
 
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
