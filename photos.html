@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>📸 Party Galerie</title>
 
@@ -12,98 +12,58 @@
 
 body{
 margin:0;
-font-family:Arial,Helvetica,sans-serif;
-min-height:100vh;
-display:flex;
-justify-content:center;
+font-family:Arial;
+background:#0f3d3e;
 color:white;
 padding:20px;
-
-background-image:url("https://images.unsplash.com/photo-1513151233558-d860c5398176");
-background-size:cover;
-background-position:center;
-}
-
-.card{
-
-background:rgba(0,0,0,0.45);
-backdrop-filter:blur(12px);
-
-padding:30px;
-border-radius:20px;
-
-width:100%;
-max-width:1000px;
-
-box-shadow:0 20px 60px rgba(0,0,0,0.4);
-
 }
 
 h1{
 text-align:center;
-margin-top:0;
 }
-
-/* Buttons */
-
-.topbuttons{
-text-align:center;
-margin-bottom:20px;
-}
-
-.button{
-
-display:inline-block;
-padding:14px 20px;
-border-radius:12px;
-font-weight:bold;
-text-decoration:none;
-margin:5px;
-
-}
-
-.upload{
-background:#ffd54f;
-color:black;
-}
-
-.back{
-background:#fff3b0;
-color:black;
-}
-
-/* Galerie */
 
 .gallery{
 
-column-count:4;
-column-gap:12px;
+column-count:3;
+column-gap:10px;
+
+max-width:900px;
+margin:auto;
 
 }
 
 .photo{
-
 break-inside:avoid;
-margin-bottom:12px;
-
+margin-bottom:10px;
 }
 
 .photo img{
 
 width:100%;
-border-radius:12px;
+border-radius:10px;
 cursor:pointer;
 
 }
 
-/* Mobile */
+.viewer{
 
-@media(max-width:900px){
-.gallery{column-count:3;}
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+background:black;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
 }
 
-@media(max-width:600px){
-.gallery{column-count:2;}
+.viewer img{
+max-width:95%;
+max-height:95%;
 }
 
 </style>
@@ -112,58 +72,54 @@ cursor:pointer;
 
 <body>
 
-<div class="card">
-
 <h1>📸 Party Galerie</h1>
-
-<div class="topbuttons">
-
-<a class="button upload" href="/">
-📸 Fotos hochladen
-</a>
-
-<a class="button back"
-href="https://nx70782.your-storageshare.de/s/X7fK3RMRtgo8FbA"
-target="_blank">
-📁 Download Ordner
-</a>
-
-</div>
 
 <div class="gallery" id="gallery"></div>
 
-</div>
-
 <script>
 
-async function loadImages(){
+async function load(){
 
 const res=await fetch("/gallery");
 const images=await res.json();
 
 const gallery=document.getElementById("gallery");
-gallery.innerHTML="";
 
 images.reverse().forEach(path=>{
 
-const filename=path.split("/").pop();
-const imgURL="/image?file="+filename;
+const file=path.split("/").pop();
+const url="/image?file="+file;
 
-const container=document.createElement("div");
-container.className="photo";
+const div=document.createElement("div");
+div.className="photo";
 
 const img=document.createElement("img");
-img.src=imgURL;
+img.src=url;
 
-container.appendChild(img);
-gallery.appendChild(container);
+img.onclick=()=>{
+
+const viewer=document.createElement("div");
+viewer.className="viewer";
+
+const big=document.createElement("img");
+big.src=url;
+
+viewer.appendChild(big);
+
+viewer.onclick=()=>viewer.remove();
+
+document.body.appendChild(viewer);
+
+};
+
+div.appendChild(img);
+gallery.appendChild(div);
 
 });
 
 }
 
-loadImages();
-setInterval(loadImages,15000);
+load();
 
 </script>
 
