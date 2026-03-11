@@ -23,8 +23,10 @@ body{
 margin:0;
 font-family:"Poppins",sans-serif;
 
+/* Hintergrundbild */
+
 background:
-linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.45)),
+linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0.35)),
 url("https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=1600");
 
 background-size:cover;
@@ -43,60 +45,70 @@ padding:20px;
 
 }
 
+/* Karte */
+
 .card{
 
-background:rgba(20,50,55,0.85);
+background:rgba(20,50,55,0.78);
 
 backdrop-filter:blur(6px);
 
-padding:35px 30px;
+padding:28px 26px;
 
-border-radius:25px;
+border-radius:22px;
 
-max-width:420px;
+max-width:380px;
 width:100%;
 
-box-shadow:0 20px 60px rgba(0,0,0,0.5);
+box-shadow:0 15px 40px rgba(0,0,0,0.5);
 
 }
+
+/* Titel */
 
 h2{
 
-font-size:28px;
-margin-bottom:10px;
+font-size:26px;
+margin-bottom:8px;
 
 }
+
+/* Text */
 
 p{
 
 line-height:1.6;
-font-size:16px;
-margin-bottom:18px;
+font-size:15px;
+margin-bottom:16px;
 
 }
+
+/* Counter */
 
 #counter{
 
-margin-bottom:20px;
-font-size:16px;
+margin-bottom:18px;
+font-size:15px;
 opacity:0.9;
 
 }
+
+/* Buttons */
 
 .button{
 
 display:block;
 
 width:100%;
-max-width:320px;
+max-width:280px;
 
-margin:10px auto;
+margin:8px auto;
 
-padding:16px;
+padding:14px;
 
-border-radius:14px;
+border-radius:12px;
 
-font-size:18px;
+font-size:16px;
 font-weight:600;
 
 text-decoration:none;
@@ -107,7 +119,7 @@ transition:all 0.25s ease;
 
 }
 
-/* Upload Button */
+/* Upload */
 
 .upload{
 
@@ -115,12 +127,6 @@ background:#ffd43b;
 color:#222;
 
 animation:pulse 2s infinite;
-
-}
-
-.upload:hover{
-
-transform:scale(1.05);
 
 }
 
@@ -142,7 +148,15 @@ color:#333;
 
 }
 
-/* pulsieren */
+/* Hover */
+
+.button:hover{
+
+transform:scale(1.04);
+
+}
+
+/* Pulsieren */
 
 @keyframes pulse{
 
@@ -156,11 +170,11 @@ color:#333;
 
 .progress{
 
-margin-top:18px;
+margin-top:14px;
 
 background:rgba(255,255,255,0.25);
 
-height:12px;
+height:10px;
 
 border-radius:10px;
 
@@ -181,17 +195,18 @@ transition:width 0.3s;
 
 #status{
 
-margin-top:10px;
-font-size:14px;
+margin-top:8px;
+font-size:13px;
 
 }
 
+/* Footer */
+
 .footer{
 
-margin-top:18px;
-font-size:14px;
+margin-top:16px;
+font-size:13px;
 opacity:0.9;
-line-height:1.6;
 
 }
 
@@ -201,26 +216,23 @@ display:none;
 
 /* Mobile */
 
-@media (max-width:600px){
+@media (max-width:480px){
 
 .card{
 
-padding:28px 22px;
+max-width:320px;
+padding:24px 20px;
 
 }
 
 h2{
-font-size:24px;
-}
-
-p{
-font-size:15px;
+font-size:23px;
 }
 
 .button{
 
-font-size:17px;
-padding:15px;
+font-size:15px;
+padding:13px;
 
 }
 
@@ -261,7 +273,7 @@ Erinnerungen sammeln können.
 </label>
 
 
-<a class="button gallery" href="/photos.html">
+<a class="button gallery" href="/gallery.html">
 
 🖼 Galerie ansehen
 
@@ -278,7 +290,6 @@ target="_blank">
 
 
 <div id="status"></div>
-
 
 <div class="progress">
 
@@ -299,7 +310,7 @@ Danke fürs Mitfeiern und Teilen der Erinnerungen 🙌
 
 <script>
 
-/* Foto Counter */
+/* Counter */
 
 async function loadCounter(){
 
@@ -311,7 +322,7 @@ const data = await res.json();
 document.getElementById("counter").innerHTML =
 "📸 "+data.count+" Fotos hochgeladen";
 
-}catch(e){
+}catch{
 
 document.getElementById("counter").innerHTML =
 "📸 Fotos werden gesammelt";
@@ -321,7 +332,6 @@ document.getElementById("counter").innerHTML =
 }
 
 loadCounter();
-
 
 
 /* Upload */
@@ -363,7 +373,7 @@ status.innerHTML="Upload erfolgreich 🎉";
 
 confetti({
 
-particleCount:140,
+particleCount:120,
 spread:70,
 origin:{y:0.6}
 
@@ -396,6 +406,4 @@ xhr.send(file);
 </script>
 
 </body>
-
 </html>
-
