@@ -22,7 +22,7 @@ h1{
 text-align:center;
 }
 
-/* Top Buttons */
+/* Topbar */
 
 .topbar{
 
@@ -37,7 +37,12 @@ margin-bottom:20px;
 
 .button{
 
-padding:10px 16px;
+width:200px;
+height:42px;
+
+display:flex;
+justify-content:center;
+align-items:center;
 
 border-radius:10px;
 
@@ -60,14 +65,14 @@ text-align:center;
 margin-bottom:20px;
 }
 
-/* Masonry */
+/* Collage Galerie */
 
 .gallery{
 
-column-count:3;
+column-count:4;
 column-gap:12px;
 
-max-width:1000px;
+max-width:1100px;
 margin:auto;
 
 }
@@ -115,13 +120,17 @@ max-width:95%;
 max-height:95%;
 }
 
-/* Mobile */
+/* Responsive */
 
-@media(max-width:900px){
+@media(max-width:1000px){
+.gallery{column-count:3;}
+}
+
+@media(max-width:700px){
 .gallery{column-count:2;}
 }
 
-@media(max-width:500px){
+@media(max-width:450px){
 .gallery{column-count:1;}
 }
 
@@ -167,12 +176,8 @@ let images = await res.json();
 
 images = images.sort().reverse();
 
-/* Counter */
-
 document.getElementById("total").innerHTML =
 "📸 "+images.length+" Fotos insgesamt";
-
-/* neue Fotos */
 
 const lastSeen = localStorage.getItem("lastSeenCount") || 0;
 
@@ -184,8 +189,6 @@ document.getElementById("new").innerHTML =
 "✨ "+newCount+" neue Fotos seit deinem letzten Besuch";
 
 }
-
-/* Galerie */
 
 const gallery = document.getElementById("gallery");
 
@@ -219,12 +222,9 @@ document.body.appendChild(viewer);
 };
 
 div.appendChild(img);
-
 gallery.appendChild(div);
 
 });
-
-/* Besuch speichern */
 
 localStorage.setItem("lastSeenCount",images.length);
 
