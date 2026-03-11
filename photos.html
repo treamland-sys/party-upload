@@ -57,7 +57,6 @@ padding:12px;
 }
 
 .photo{
-position:relative;
 break-inside:avoid;
 margin-bottom:12px;
 }
@@ -66,18 +65,6 @@ margin-bottom:12px;
 width:100%;
 border-radius:12px;
 cursor:pointer;
-}
-
-.photo input{
-position:absolute;
-top:10px;
-left:10px;
-width:22px;
-height:22px;
-}
-
-.photo.selected img{
-outline:5px solid #ffd54f;
 }
 
 @media(max-width:900px){
@@ -102,8 +89,8 @@ z-index:9999;
 }
 
 .viewer img{
-max-width:90%;
-max-height:90%;
+max-width:95%;
+max-height:95%;
 border-radius:10px;
 }
 
@@ -117,18 +104,10 @@ border-radius:10px;
 
 <div class="controls">
 
-<button class="btn" onclick="downloadSelected()">
-⬇ Ausgewählte Fotos
-</button>
-
 <a href="/" class="btn">
 📤 Fotos hochladen
 </a>
 
-</div>
-
-<div class="info" id="selectedCount">
-0 Fotos ausgewählt
 </div>
 
 <div class="info" id="newPhotos"></div>
@@ -136,8 +115,6 @@ border-radius:10px;
 <div class="gallery" id="gallery"></div>
 
 <script>
-
-let selected=[];
 
 async function loadImages(){
 
@@ -152,34 +129,13 @@ gallery.innerHTML="";
 images.reverse().forEach(path=>{
 
 const filename = path.split("/").pop();
-const workerURL="/image?file="+filename;
+const imgURL = "/image?file="+filename;
 
 const container=document.createElement("div");
 container.className="photo";
 
 const img=document.createElement("img");
-img.src=workerURL;
-
-const checkbox=document.createElement("input");
-checkbox.type="checkbox";
-
-checkbox.onchange=()=>{
-
-if(checkbox.checked){
-
-container.classList.add("selected");
-selected.push(workerURL);
-
-}else{
-
-container.classList.remove("selected");
-selected=selected.filter(i=>i!==workerURL);
-
-}
-
-updateCounter();
-
-};
+img.src=imgURL;
 
 img.onclick=()=>{
 
@@ -187,7 +143,7 @@ const viewer=document.createElement("div");
 viewer.className="viewer";
 
 const big=document.createElement("img");
-big.src=workerURL;
+big.src=imgURL;
 
 viewer.appendChild(big);
 viewer.onclick=()=>viewer.remove();
@@ -197,18 +153,9 @@ document.body.appendChild(viewer);
 };
 
 container.appendChild(img);
-container.appendChild(checkbox);
-
 gallery.appendChild(container);
 
 });
-
-}
-
-function updateCounter(){
-
-document.getElementById("selectedCount").innerText =
-selected.length+" Fotos ausgewählt";
 
 }
 
@@ -233,43 +180,9 @@ localStorage.setItem("photoCount",current);
 
 }
 
-async function downloadSelected(){
-
-if(selected.length===0){
-alert("Keine Fotos ausgewählt");
-return;
-}
-
-const files = selected;
-
-const response = await fetch("/zip",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body: JSON.stringify({files})
-});
-
-const blob = await response.blob();
-
-const url = URL.createObjectURL(blob);
-
-const link=document.createElement("a");
-link.href=url;
-link.download="party_fotos.zip";
-
-document.body.appendChild(link);
-link.click();
-
-setTimeout(()=>{
-URL.revokeObjectURL(url);
-link.remove();
-},1000);
-
-}
-
 loadImages();
 
+/* Galerie aktualisiert automatisch */
 setInterval(loadImages,15000);
 
 </script>
