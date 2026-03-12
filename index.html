@@ -492,6 +492,7 @@ bar.style.width=percent+"%";
 };
 
 xhr.onload=function(){
+console.log("Upload Status:", xhr.status);
 
 if(xhr.status === 409){
 
@@ -593,6 +594,7 @@ origin:{y:0.4}
 
 </body>
 </html>
+
 
 
 
