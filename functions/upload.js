@@ -54,13 +54,25 @@ return new Response("Upload Fehler", {status:500});
 
 /* Counter erhöhen */
 
+try {
+
 const kv = context.env.COUNTER;
+
+if(kv){
 
 let count = await kv.get("photos");
 
 count = parseInt(count || "0") + 1;
 
 await kv.put("photos", count.toString());
+
+}
+
+} catch(e){
+
+console.log("Counter Fehler ignoriert");
+
+}
 
 /* Erfolg */
 
@@ -77,3 +89,4 @@ headers:{
 );
 
 }
+
