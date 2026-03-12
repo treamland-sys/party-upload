@@ -83,6 +83,35 @@ margin-bottom:16px;
 
 }
 
+/* Geburtstagszahl hervorheben */
+
+.age{
+
+color:#ffd43b;
+font-weight:700;
+
+animation:ageGlow 2.5s ease-in-out infinite;
+
+}
+
+/* sanftes Leuchten */
+
+@keyframes ageGlow{
+
+0%{
+text-shadow:0 0 6px rgba(255,212,59,0.4);
+}
+
+50%{
+text-shadow:0 0 22px rgba(255,212,59,1);
+}
+
+100%{
+text-shadow:0 0 6px rgba(255,212,59,0.4);
+}
+
+}
+
 /* Counter */
 
 #counter{
@@ -244,7 +273,7 @@ padding:13px;
 
 <div class="card">
 
-<h2>🎉 Ellis 40. Geburtstag</h2>
+<h2>🎉 <span class="age">40</span>. Geburtstag</h2>
 
 <p>Schön, dass du mitfeierst!</p>
 
@@ -430,12 +459,29 @@ scalar:0.8
 
 },300);
 
+/* einmaliges Geburtstags-Konfetti */
+
+window.addEventListener("load",()=>{
+
+setTimeout(()=>{
+
+confetti({
+particleCount:120,
+spread:80,
+origin:{y:0.4}
+});
+
+},600);
+
+});
+
 </script>
   
 
 
 </body>
 </html>
+
 
 
 
