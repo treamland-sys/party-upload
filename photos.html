@@ -160,10 +160,31 @@ let lastImageCount = 0;
 
 /* Galerie laden */
 
+<script>
+
+let lastImageCount = 0;
+
+/* Galerie laden */
+
 async function loadGallery(){
 
 const res = await fetch("/gallery?t="+Date.now());
 const images = await res.json();
+
+/* Counter von Server holen */
+
+try{
+const countRes = await fetch("/count");
+const countData = await countRes.json();
+
+document.getElementById("total").innerHTML =
+"📸 "+countData.count+" Fotos insgesamt";
+}catch{
+document.getElementById("total").innerHTML =
+"📸 "+images.length+" Fotos insgesamt";
+}
+
+/* nur neu bauen wenn sich etwas geändert hat */
 
 if(images.length !== lastImageCount){
 
@@ -181,14 +202,7 @@ function buildGallery(images){
 
 images = images.sort().reverse();
 
-const countRes = await fetch("/count");
-const countData = await countRes.json();
-
-document.getElementById("total").innerHTML =
-"📸 "+countData.count+" Fotos insgesamt";
-
 const lastSeen = localStorage.getItem("lastSeenCount") || 0;
-
 const newCount = images.length - lastSeen;
 
 if(newCount>0){
@@ -212,8 +226,6 @@ const url = "/image?file="+file;
 
 const div = document.createElement("div");
 div.className="photo";
-
-/* erstes Bild = neuestes */
 
 if(index === 0){
 div.classList.add("newest");
