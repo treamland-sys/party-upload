@@ -21,6 +21,16 @@ headers:{ "content-type":"application/json" }
 
 /* ---------- Upload ---------- */
 
+const existing = await fetch(nextcloudURL, {
+headers:{
+Authorization:"Basic " + btoa(shareToken + ":")
+}
+});
+
+if(existing.status === 200){
+return new Response("Datei existiert bereits", {status:409});
+}
+
 if (request.method === "POST") {
 
 const fileName = request.headers.get("x-file-name");
@@ -52,4 +62,5 @@ return new Response("Nextcloud Status: "+response.status);
 return new Response("Worker läuft");
 
 }
+
 
