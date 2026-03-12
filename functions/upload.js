@@ -1,66 +1,83 @@
-globalThis.counter = globalThis.counter || 0;
-let counter = 0;
-
-export async function onRequest(context) {
-
-const token = "X7fK3RMRtgo8FbA";
-const baseUrl = "https://nx70782.your-storageshare.de/public.php/webdav/";
+export async function onRequestPost(context) {
 
 const request = context.request;
-const url = new URL(request.url);
 
-/* ---------- Zähler anzeigen ---------- */
+/* Dateiname aus Header holen */
 
-if (url.pathname === "/count") {
+const fileName = request.headers.get("x-file-name");
 
-return new Response(JSON.stringify({count:counter}),{
-headers:{ "content-type":"application/json" }
-});
-
+if(!fileName){
+return new Response("Kein Dateiname", {status:400});
 }
 
-/* ---------- Upload ---------- */
+/* nur Bilder erlauben */
 
-const existing = await fetch(nextcloudURL, {
+const allowed = /\.(jpg|jpeg|png|webp|heic)$/i;
+
+if(!allowed.test(fileName)){
+return new Response("Nur Bilder erlaubt", {status:400});
+}
+
+/* Nextcloud Share */
+
+const shareToken = "X7fK3RMRtgo8FbA";
+
+const nextcloudURL =
+"https://nx70782.your-storageshare.de/public.php/webdav/" + encodeURIComponent(fileName);
+
+/* Duplikat prüfen */
+
+const check = await fetch(nextcloudURL,{
+method:"HEAD",
 headers:{
 Authorization:"Basic " + btoa(shareToken + ":")
 }
 });
 
-if(existing.status === 200){
+if(check.status === 200){
 return new Response("Datei existiert bereits", {status:409});
 }
 
-if (request.method === "POST") {
+/* Datei lesen */
 
-const fileName = request.headers.get("x-file-name");
-const body = await request.arrayBuffer();
+const fileBuffer = await request.arrayBuffer();
 
-const response = await fetch(baseUrl + Date.now()+"_"+fileName, {
+/* Upload zu Nextcloud */
 
+const upload = await fetch(nextcloudURL,{
 method:"PUT",
-
 headers:{
-"Authorization":"Basic "+btoa(token+":"),
-"Content-Type":"application/octet-stream"
+Authorization:"Basic " + btoa(shareToken + ":")
 },
-
-body:body
-
+body:fileBuffer
 });
 
-/* Upload zählen */
-
-if(response.status === 201 || response.status === 204){
-counter++;
+if(upload.status !== 201 && upload.status !== 204){
+return new Response("Upload Fehler", {status:500});
 }
 
-return new Response("Nextcloud Status: "+response.status);
+/* Counter erhöhen */
+
+const kv = context.env.COUNTER;
+
+let count = await kv.get("photos");
+
+count = parseInt(count || "0") + 1;
+
+await kv.put("photos", count.toString());
+
+/* Erfolg */
+
+return new Response(
+JSON.stringify({
+success:true,
+file:fileName
+}),
+{
+headers:{
+"Content-Type":"application/json"
+}
+}
+);
 
 }
-
-return new Response("Worker läuft");
-
-}
-
-
