@@ -48,18 +48,18 @@ padding:40px 20px;
 
 .card{
 
-background:rgba(20,50,55,0.45);
+background:rgba(20,50,55,0.30);
 
-backdrop-filter:blur(8px);
+backdrop-filter:blur(6px);
 
-border:1px solid rgba(255,255,255,0.15);
+border:1px solid rgba(255,255,255,0.18);
 
 border-radius:22px;
 
 max-width:360px;
 width:100%;
 
-box-shadow:0 15px 40px rgba(0,0,0,0.5);
+box-shadow:0 12px 35px rgba(0,0,0,0.45);
 
 }
 
@@ -332,6 +332,16 @@ input.addEventListener("change", async function(){
 
 const files=input.files;
 
+/* maximal 10 Fotos */
+
+if(files.length > 10){
+
+alert("Bitte maximal 10 Fotos gleichzeitig hochladen 📸");
+
+return;
+
+}
+
 for(let file of files){
 
 /* nur Bilder erlauben */
@@ -426,6 +436,7 @@ scalar:0.8
 
 </body>
 </html>
+
 
 
 
