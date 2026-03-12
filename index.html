@@ -87,60 +87,66 @@ margin-bottom:16px;
 
 .age{
 
-display:inline-flex;
-align-items:center;
-justify-content:center;
-
-width:48px;
-height:48px;
-
-border-radius:50%;
-
-/* keine Fläche mehr */
-background:transparent;
-
-/* weiße Zahl */
 color:white;
+font-weight:700;
 
-font-weight:600;
-font-size:22px;
+padding:2px 8px;
+margin:0 4px;
 
-margin:0 6px;
+border-radius:12px;
 
-/* goldener Ring */
-border:2px solid rgba(255,212,59,0.9);
+/* sanfter goldener Glow */
+box-shadow:
+0 0 6px rgba(255,212,59,0.6),
+0 0 14px rgba(255,212,59,0.35);
 
-/* sanfter Glow */
-box-shadow:0 0 10px rgba(255,212,59,0.4);
+animation:glow40 3s ease-in-out infinite;
 
-animation:badgeGlow 3s ease-in-out infinite;
-
-}
-
-}
-
-}
-
-}
-
-/* sanftes Leuchten */
-
-@keyframes badgeGlow{
+@keyframes glow40{
 
 0%{
-box-shadow:0 0 8px rgba(255,212,59,0.5);
+box-shadow:
+0 0 4px rgba(255,212,59,0.4),
+0 0 10px rgba(255,212,59,0.2);
 }
 
 50%{
-box-shadow:0 0 22px rgba(255,212,59,1);
+box-shadow:
+0 0 10px rgba(255,212,59,0.8),
+0 0 22px rgba(255,212,59,0.45);
 }
 
 100%{
-box-shadow:0 0 8px rgba(255,212,59,0.5);
+box-shadow:
+0 0 4px rgba(255,212,59,0.4),
+0 0 10px rgba(255,212,59,0.2);
 }
 
 }
 
+}
+
+@keyframes glow40{
+
+0%{
+box-shadow:
+0 0 4px rgba(255,212,59,0.4),
+0 0 10px rgba(255,212,59,0.2);
+}
+
+50%{
+box-shadow:
+0 0 10px rgba(255,212,59,0.8),
+0 0 22px rgba(255,212,59,0.45);
+}
+
+100%{
+box-shadow:
+0 0 4px rgba(255,212,59,0.4),
+0 0 10px rgba(255,212,59,0.2);
+}
+
+}
 /* Counter */
 
 #counter{
@@ -510,6 +516,7 @@ origin:{y:0.4}
 
 </body>
 </html>
+
 
 
 
