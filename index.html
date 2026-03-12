@@ -334,6 +334,16 @@ const files=input.files;
 
 for(let file of files){
 
+/* nur Bilder erlauben */
+
+if(!file.type.startsWith("image/")){
+
+alert("Bitte nur Fotos hochladen 📸");
+
+continue;
+
+}
+
 status.innerHTML="Upload läuft...";
 
 let xhr=new XMLHttpRequest();
@@ -393,6 +403,7 @@ xhr.send(file);
 
 </body>
 </html>
+
 
 
 
