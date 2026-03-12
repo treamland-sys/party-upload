@@ -338,7 +338,8 @@ padding:13px;
 
 <div class="card">
 
-<h2>Ellis <span class="age">40</span>. Geburtstag</h2>
+
+<h2>🎉 Ellis <span class="age" id="age40">40</span>. Geburtstag</h2>
 
 <p>Schön, dass du mitfeierst!</p>
 
@@ -470,6 +471,13 @@ bar.style.width=percent+"%";
 xhr.onload=function(){
 
 status.innerHTML="Upload erfolgreich 🎉";
+const badge = document.getElementById("age40");
+
+badge.classList.add("flash40");
+
+setTimeout(()=>{
+badge.classList.remove("flash40");
+},1200);
 
 confetti({
 
@@ -546,6 +554,7 @@ origin:{y:0.4}
 
 </body>
 </html>
+
 
 
 
