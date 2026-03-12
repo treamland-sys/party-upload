@@ -400,9 +400,31 @@ xhr.send(file);
 });
 
 </script>
+  
+/* sanft rieselndes Konfetti */
+
+setInterval(()=>{
+
+confetti({
+particleCount:1,
+startVelocity:0,
+ticks:300,
+gravity:0.3,
+drift:0.2,
+origin:{
+x:Math.random(),
+y:-0.1
+},
+colors:["#ffd43b","#ffffff","#ffe066"],
+shapes:["circle"],
+scalar:0.8
+});
+
+},400);
 
 </body>
 </html>
+
 
 
 
