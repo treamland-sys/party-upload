@@ -83,7 +83,7 @@ transition:0.2s;
 transform:scale(1.03);
 }
 
-/* Neuestes Foto hervorheben */
+/* Neuestes Foto */
 
 .newest img{
 border:4px solid #ffd54f;
@@ -109,7 +109,7 @@ max-width:95%;
 max-height:95%;
 }
 
-/* Responsive Masonry */
+/* Responsive */
 
 @media(max-width:1000px){
 .gallery{column-count:3;}
@@ -160,29 +160,15 @@ let lastImageCount = 0;
 
 /* Galerie laden */
 
-<script>
-
-let lastImageCount = 0;
-
-/* Galerie laden */
-
 async function loadGallery(){
 
 const res = await fetch("/gallery?t="+Date.now());
 const images = await res.json();
 
-/* Counter von Server holen */
+/* Counter */
 
-try{
-const countRes = await fetch("/count");
-const countData = await countRes.json();
-
-document.getElementById("total").innerHTML =
-"📸 "+countData.count+" Fotos insgesamt";
-}catch{
 document.getElementById("total").innerHTML =
 "📸 "+images.length+" Fotos insgesamt";
-}
 
 /* nur neu bauen wenn sich etwas geändert hat */
 
@@ -215,8 +201,6 @@ document.getElementById("new").innerHTML =
 const gallery = document.getElementById("gallery");
 
 gallery.innerHTML = "";
-
-/* Fotos anzeigen */
 
 images.forEach((path,index)=>{
 
