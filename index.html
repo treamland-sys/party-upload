@@ -501,7 +501,7 @@ return;
 
 }
 
-if(xhr.status !== 200){
+if(xhr.status !== 200 && xhr.status !== 201 && xhr.status !== 204){
 
 status.innerHTML="Upload Fehler";
 
@@ -593,6 +593,7 @@ origin:{y:0.4}
 
 </body>
 </html>
+
 
 
 
