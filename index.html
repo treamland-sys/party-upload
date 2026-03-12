@@ -91,13 +91,13 @@ display:inline-flex;
 align-items:center;
 justify-content:center;
 
-width:48px;
-height:48px;
+width:50px;
+height:50px;
 
 border-radius:50%;
 
-/* halbtransparentes Gold */
-background:rgba(255,212,59,0.65);
+/* sehr leichtes Gold */
+background:rgba(255,212,59,0.35);
 
 color:#1a1a1a;
 
@@ -106,10 +106,17 @@ font-size:22px;
 
 margin:0 6px;
 
+/* goldener Ring */
+border:2px solid rgba(255,212,59,0.8);
+
 /* sanfter Glow */
-box-shadow:0 0 10px rgba(255,212,59,0.45);
+box-shadow:
+0 0 8px rgba(255,212,59,0.4),
+0 0 18px rgba(255,212,59,0.25);
 
 animation:badgeGlow 3s ease-in-out infinite;
+
+}
 
 }
 
@@ -502,6 +509,7 @@ origin:{y:0.4}
 
 </body>
 </html>
+
 
 
 
