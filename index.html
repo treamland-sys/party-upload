@@ -546,6 +546,22 @@ bar.style.width=percent+"%";
 
 xhr.onload=function(){
 
+if(xhr.status === 409){
+
+status.innerHTML="⚠️ Dieses Foto wurde bereits hochgeladen";
+
+return;
+
+}
+
+if(xhr.status !== 200){
+
+status.innerHTML="Upload Fehler";
+
+return;
+
+}
+
 status.innerHTML="Upload erfolgreich 🎉";
 const badge = document.getElementById("age40");
 
@@ -630,6 +646,7 @@ origin:{y:0.4}
 
 </body>
 </html>
+
 
 
 
