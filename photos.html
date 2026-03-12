@@ -181,8 +181,11 @@ function buildGallery(images){
 
 images = images.sort().reverse();
 
+const countRes = await fetch("/count");
+const countData = await countRes.json();
+
 document.getElementById("total").innerHTML =
-"📸 "+images.length+" Fotos insgesamt";
+"📸 "+countData.count+" Fotos insgesamt";
 
 const lastSeen = localStorage.getItem("lastSeenCount") || 0;
 
