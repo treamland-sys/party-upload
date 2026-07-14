@@ -34,68 +34,14 @@ const nextcloudURL =
 
 const fileBuffer = await request.arrayBuffer();
 
-const upload = await fetch(nextcloudURL,{
-    method:"PUT",
-    headers:{
-        "Authorization":"Basic " + btoa(`${shareToken}:`),
-        "X-Requested-With":"XMLHttpRequest",
-        "Content-Type":"application/octet-stream"
-    },
-    body:fileBuffer,
-    redirect:"follow"
-});
-
-console.log("NC Status:",upload.status);
-
-if(upload.status !== 201 && upload.status !== 204){
-
-    return new Response(
-        await upload.text(),
-        {
-            status:upload.status,
-            headers:{
-                "Content-Type":"text/plain"
-            }
-        }
-    );
-
-}
-
-/* Counter erhöhen */
-
-try {
-
-const kv = context.env.COUNTER;
-
-if(kv){
-
-let count = await kv.get("photos");
-
-count = parseInt(count || "0") + 1;
-
-await kv.put("photos", count.toString());
-
-}
-
-} catch(e){
-
-console.log("Counter Fehler ignoriert");
-
-}
-
-/* Erfolg */
+const upload = await fetch("https://www.google.de");
 
 return new Response(
-JSON.stringify({
-success:true,
-file:safeName
-}),
-{
-headers:{
-"Content-Type":"application/json"
-}
-}
+  await upload.text(),
+  {
+    headers:{
+      "Content-Type":"text/html"
+    }
+  }
 );
-
-}
 
