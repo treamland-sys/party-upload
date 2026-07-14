@@ -25,31 +25,40 @@ const random = Math.floor(Math.random()*1000);
 
 const safeName = `${timestamp}_${random}_${fileName}`;
 
-/* Nextcloud WebDAV */
+/* Nextcloud 32 TEST */
 
 const shareToken = "CyiTxGiYJqBaHHg";
 
 const nextcloudURL =
-"https://nx70782.your-storageshare.de/public.php/webdav/" + encodeURIComponent(safeName);
-
-/* Datei lesen */
+`https://nx70782.your-storageshare.de/public.php/dav/files/${shareToken}/${encodeURIComponent(safeName)}`;
 
 const fileBuffer = await request.arrayBuffer();
 
-/* Upload zu Nextcloud */
-
 const upload = await fetch(nextcloudURL,{
-method:"PUT",
-headers:{
-Authorization:"Basic " + btoa(shareToken + ":")
-},
-body:fileBuffer
+    method:"PUT",
+    headers:{
+        "Authorization":"Basic " + btoa(`${shareToken}:`),
+        "X-Requested-With":"XMLHttpRequest",
+        "Content-Type":"application/octet-stream"
+    },
+    body:fileBuffer,
+    redirect:"follow"
 });
 
-/* Upload prüfen */
+console.log("NC Status:",upload.status);
 
 if(upload.status !== 201 && upload.status !== 204){
-return new Response("Upload Fehler", {status:500});
+
+    return new Response(
+        await upload.text(),
+        {
+            status:upload.status,
+            headers:{
+                "Content-Type":"text/plain"
+            }
+        }
+    );
+
 }
 
 /* Counter erhöhen */
