@@ -30,7 +30,7 @@ const safeName = `${timestamp}_${random}_${fileName}`;
 const shareToken = "X7fK3RMRtgo8FbA";
 
 const nextcloudURL =
-"https://nx70782.your-storageshare.de/public.php/webdav/" + encodeURIComponent(safeName);
+"https://nx70782.your-storageshare.de/s/CyiTxGiYJqBaHHg" + encodeURIComponent(safeName);
 
 /* Datei lesen */
 
