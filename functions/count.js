@@ -1,6 +1,6 @@
 export async function onRequest() {
 
-const token = "X7fK3RMRtgo8FbA";
+const token = "CyiTxGiYJqBaHHg";
 const url = "https://nx70782.your-storageshare.de/public.php/webdav/";
 
 const response = await fetch(url, {
