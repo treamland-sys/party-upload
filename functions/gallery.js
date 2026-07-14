@@ -1,6 +1,6 @@
 export async function onRequest(context) {
 
-const shareToken = "X7fK3RMRtgo8FbA";
+const shareToken = "CyiTxGiYJqBaHHg";
 
 const url = "https://nx70782.your-storageshare.de/public.php/dav/files/" + shareToken + "/";
 
