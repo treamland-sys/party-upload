@@ -41,13 +41,14 @@ const fileBuffer = await request.arrayBuffer();
 try {
 
     const upload = await fetch(nextcloudURL,{
-        method:"PUT",
-        headers:{
-            Authorization:"Basic " + btoa(shareToken + ":"),
-            "X-Requested-With":"XMLHttpRequest"
-        },
-        body:fileBuffer
-    });
+    signal: AbortSignal.timeout(10000),
+    method:"PUT",
+    headers:{
+        Authorization:"Basic " + btoa(shareToken + ":"),
+        "X-Requested-With":"XMLHttpRequest"
+    },
+    body:fileBuffer
+});
 
     return new Response(
         JSON.stringify({
