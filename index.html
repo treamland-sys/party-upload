@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ellis 40. Geburtstag</title>
+<title>💍 Hochzeit von Nancy & Thomas</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
@@ -80,124 +80,6 @@ p{
 font-size:15px;
 line-height:1.6;
 margin-bottom:16px;
-
-}
-/* Hervorgehobene 40 */
-
-.age{
-
-position:relative;
-display:inline-block;
-
-color:white;
-font-weight:700;
-
-font-size:1.25em;
-
-padding:2px 10px;
-margin:0 6px;
-
-border-radius:10px;
-
-vertical-align:middle;
-line-height:1;
-
-transform:translateY(-2px);
-
-/* goldener Glow */
-
-box-shadow:
-0 0 8px rgba(255,212,59,0.5),
-0 0 18px rgba(255,212,59,0.25);
-
-overflow:hidden;
-
-/* ruhiger Atem Effekt */
-
-animation:breathe40 5s ease-in-out infinite;
-
-}
-
-/* Atem Effekt */
-
-@keyframes breathe40{
-
-0%{
-transform:translateY(-2px) scale(1);
-}
-
-50%{
-transform:translateY(-2px) scale(1.05);
-}
-
-100%{
-transform:translateY(-2px) scale(1);
-}
-
-}
-
-/* Glanzstreifen */
-
-.age::after{
-
-content:"";
-
-position:absolute;
-top:0;
-left:-120%;
-
-width:120%;
-height:100%;
-
-background:linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,0.7),
-transparent
-);
-
-transform:skewX(-20deg);
-
-animation:shine40 3s ease-out 1;
-
-}
-
-/* Glanz Animation */
-
-@keyframes shine40{
-
-0%{ left:-120%; }
-100%{ left:120%; }
-
-}
-
-/* Upload Highlight Effekt */
-
-.flash40{
-
-animation:flashGlow 1.2s ease;
-
-}
-
-@keyframes flashGlow{
-
-0%{
-box-shadow:
-0 0 10px rgba(255,212,59,0.6),
-0 0 20px rgba(255,212,59,0.4);
-}
-
-50%{
-box-shadow:
-0 0 25px rgba(255,212,59,1),
-0 0 60px rgba(255,212,59,0.9);
-}
-
-100%{
-box-shadow:
-0 0 10px rgba(255,212,59,0.6),
-0 0 20px rgba(255,212,59,0.4);
-}
 
 }
 /* Counter */
@@ -362,15 +244,14 @@ padding:13px;
 <div class="card">
 
 
-<h2>🎉 Ellis <span class="age" id="age40">40</span>. Geburtstag</h2>
-
-<p>Schön, dass du mitfeierst!</p>
-
+<h2>💍 Nancy &amp; Thomas</h2>
+<p>Schön, dass ihr unseren besonderen Tag mit uns feiert.</p>
 <p>
 
-Lade hier deine schönsten Fotos
-von der Party hoch, damit wir die besten
-Erinnerungen sammeln können.
+Teilt eure schönsten Momente mit uns.
+
+Ladet hier eure schönsten Fotos unserer Hochzeit hoch,
+damit wir diesen besonderen Tag gemeinsam festhalten können.
 
 </p>
 
@@ -379,7 +260,7 @@ Erinnerungen sammeln können.
 
 <label class="button upload">
 
-📸 Fotos hochladen
+📸 Hochzeitsfotos hochladen
 
 <input type="file" id="fileInput" multiple>
 
@@ -388,7 +269,7 @@ Erinnerungen sammeln können.
 
 <a class="button gallery" href="/photos.html">
 
-🖼 Galerie ansehen
+💍 Hochzeitsgalerie
 
 </a>
 
@@ -403,7 +284,7 @@ Erinnerungen sammeln können.
 
 <div class="footer">
 
-Danke fürs Mitfeiern und Teilen der Erinnerungen 🙌
+❤️ Danke, dass ihr diesen besonderen Tag mit uns verbringt.
 
 </div>
 
@@ -511,14 +392,6 @@ return;
 }
 
 status.innerHTML="Upload erfolgreich 🎉";
-const badge = document.getElementById("age40");
-
-badge.classList.add("flash40");
-
-setTimeout(()=>{
-badge.classList.remove("flash40");
-},1200);
-
 confetti({
 
 particleCount:120,
@@ -572,7 +445,7 @@ scalar:0.8
 
 },300);
 
-/* einmaliges Geburtstags-Konfetti */
+/* Willkommensanimation */
 
 window.addEventListener("load",()=>{
 
