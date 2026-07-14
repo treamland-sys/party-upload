@@ -1,269 +1,120 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>💍 Hochzeit von Nancy & Thomas</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
 body{
-
 margin:0;
 font-family:"Poppins",sans-serif;
-
 background:
-linear-gradient(rgba(255,255,255,0.15),rgba(255,255,255,0.25)),
+linear-gradient(rgba(255,255,255,.15),rgba(255,255,255,.25)),
 url("background-wedding.png");
-
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
-
 min-height:100vh;
-
 padding:40px 20px;
-
 color:#3d3d3d;
-
 }
-
-h1{
-text-align:center;
-}
-
-/* Topbar */
-
-.topbar{
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap;
-margin-bottom:20px;
-}
-
-.button{
-width:200px;
-height:42px;
-display:flex;
-justify-content:center;
-align-items:center;
-border-radius:10px;
-background:#ffd54f;
-color:black;
-font-weight:bold;
-text-decoration:none;
-}
-
-.download{
-background:#fff3b0;
-}
-
-/* Counter */
-
-.counter{
-text-align:center;
-margin-bottom:20px;
-}
-
-/* Masonry Galerie */
-
-.gallery{
-column-count:4;
-column-gap:10px;
+.card{
 max-width:1100px;
 margin:auto;
+padding:30px;
+background:rgba(255,255,255,.40);
+backdrop-filter:blur(12px);
+border-radius:22px;
+box-shadow:0 12px 35px rgba(0,0,0,.25);
 }
-
-.photo{
-break-inside:avoid;
-margin-bottom:10px;
+h1{text-align:center;margin-bottom:5px}
+.subtitle{text-align:center;margin:0 0 25px 0}
+.topbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.button{
+width:220px;height:46px;
+display:flex;justify-content:center;align-items:center;
+border-radius:12px;
+background:#ffd43b;
+color:#222;
+font-weight:600;
+text-decoration:none;
+transition:.25s;
 }
-
-.photo img{
-width:100%;
-height:auto;
-display:block;
-border-radius:10px;
-cursor:pointer;
-transition:0.2s;
-}
-
-.photo img:hover{
-transform:scale(1.03);
-}
-
-/* Neuestes Foto */
-
-.newest img{
-border:4px solid #ffd54f;
-box-shadow:0 0 18px rgba(255,212,79,0.8);
-}
-
-/* Vollbild */
-
-.viewer{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-.viewer img{
-max-width:95%;
-max-height:95%;
-}
-
-/* Responsive */
-
-@media(max-width:1000px){
-.gallery{column-count:3;}
-}
-
-@media(max-width:700px){
-.gallery{column-count:2;}
-}
-
-@media(max-width:450px){
-.gallery{column-count:2;}
-}
-
+.download{background:#f6e8a5}
+.button:hover{transform:scale(1.04)}
+.counter{text-align:center;margin-bottom:20px}
+.gallery{column-count:4;column-gap:10px;max-width:1100px;margin:auto}
+.photo{break-inside:avoid;margin-bottom:10px}
+.photo img{width:100%;border-radius:12px;cursor:pointer;transition:.2s}
+.photo img:hover{transform:scale(1.03)}
+.newest img{border:4px solid #ffd54f;box-shadow:0 0 18px rgba(255,212,79,.8)}
+.viewer{position:fixed;top:0;left:0;width:100%;height:100%;background:black;display:flex;justify-content:center;align-items:center}
+.viewer img{max-width:95%;max-height:95%}
+@media(max-width:1000px){.gallery{column-count:3}}
+@media(max-width:700px){.gallery{column-count:2}}
 </style>
-
 </head>
-
 <body>
-
-<h1>📸 Party Galerie</h1>
+<div class="card">
+<h1>💍 Nancy &amp; Thomas</h1>
+<p class="subtitle">Unsere Hochzeitsgalerie</p>
 
 <div class="topbar">
-
 <a class="button" href="/">🏠 Fotos hochladen</a>
-
-<a class="button download"
-href="https://nx70782.your-storageshare.de/s/CyiTxGiYJqBaHHg"
-target="_blank">
-
-⬇ Fotos herunterladen
-
-</a>
-
+<a class="button download" href="https://nx70782.your-storageshare.de/s/CyiTxGiYJqBaHHg" target="_blank">⬇ Fotos herunterladen</a>
 </div>
 
 <div class="counter">
-
 <div id="total">Fotos werden geladen...</div>
 <div id="new"></div>
-
 </div>
 
 <div class="gallery" id="gallery"></div>
 
 <script>
-
-let lastImageCount = 0;
-
-/* Galerie laden */
-
+let lastImageCount=0;
 async function loadGallery(){
-
-const res = await fetch("/gallery?t="+Date.now());
-const images = await res.json();
-
-/* Counter */
-
-document.getElementById("total").innerHTML =
-"📸 "+images.length+" Fotos insgesamt";
-
-/* nur neu bauen wenn sich etwas geändert hat */
-
-if(images.length !== lastImageCount){
-
-lastImageCount = images.length;
-
-buildGallery(images);
-
+ const res=await fetch("/gallery?t="+Date.now());
+ const images=await res.json();
+ document.getElementById("total").innerHTML="📸 "+images.length+" Fotos insgesamt";
+ if(images.length!==lastImageCount){lastImageCount=images.length;buildGallery(images);}
 }
-
-}
-
-/* Galerie bauen */
-
 function buildGallery(images){
-
-images = images.sort().reverse();
-
-const lastSeen = localStorage.getItem("lastSeenCount") || 0;
-const newCount = images.length - lastSeen;
-
-if(newCount>0){
-
-document.getElementById("new").innerHTML =
-"✨ "+newCount+" neue Fotos seit deinem letzten Besuch";
-
+ images=images.sort().reverse();
+ const lastSeen=localStorage.getItem("lastSeenCount")||0;
+ const newCount=images.length-lastSeen;
+ if(newCount>0){
+   document.getElementById("new").innerHTML="✨ "+newCount+" neue Fotos seit deinem letzten Besuch";
+ }
+ const gallery=document.getElementById("gallery");
+ gallery.innerHTML="";
+ images.forEach((path,index)=>{
+   const file=path.split("/").pop();
+   const url="/image?file="+file+"&thumb=1";
+   const div=document.createElement("div");
+   div.className="photo";
+   if(index===0)div.classList.add("newest");
+   const img=document.createElement("img");
+   img.src=url;
+   img.onclick=()=>{
+      const viewer=document.createElement("div");
+      viewer.className="viewer";
+      const big=document.createElement("img");
+      big.src=url;
+      viewer.appendChild(big);
+      viewer.onclick=()=>viewer.remove();
+      document.body.appendChild(viewer);
+   };
+   div.appendChild(img);
+   gallery.appendChild(div);
+ });
+ localStorage.setItem("lastSeenCount",images.length);
 }
-
-const gallery = document.getElementById("gallery");
-
-gallery.innerHTML = "";
-
-images.forEach((path,index)=>{
-
-const file = path.split("/").pop();
-
-const url = "/image?file="+file+"&thumb=1";
-
-const div = document.createElement("div");
-div.className="photo";
-
-if(index === 0){
-div.classList.add("newest");
-}
-
-const img = document.createElement("img");
-
-img.src = url;
-
-img.onclick = ()=>{
-
-const viewer=document.createElement("div");
-viewer.className="viewer";
-
-const big=document.createElement("img");
-big.src=url;
-
-viewer.appendChild(big);
-
-viewer.onclick=()=>viewer.remove();
-
-document.body.appendChild(viewer);
-
-};
-
-div.appendChild(img);
-gallery.appendChild(div);
-
-});
-
-localStorage.setItem("lastSeenCount",images.length);
-
-}
-
-/* Initial laden */
-
 loadGallery();
-
-/* Auto Refresh */
-
 setInterval(loadGallery,8000);
-
 </script>
-
+</div>
 </body>
 </html>
