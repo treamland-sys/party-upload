@@ -12,7 +12,15 @@ if(!fileName){
     return new Response("Kein Dateiname", {status:400});
 }
 
-/* nur Bildformate erlauben */
+/* MIME-Type prüfen */
+
+const contentType = request.headers.get("Content-Type") || "";
+
+if(!contentType.startsWith("image/")){
+    return new Response("Nur Bilder erlaubt", {status:400});
+}
+
+/* Dateiendung prüfen */
 
 const allowed = /\.(jpg|jpeg|png|webp|heic)$/i;
 
