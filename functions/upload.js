@@ -9,7 +9,7 @@ const fileName = decodeURIComponent(
 );
 
 if(!fileName){
-return new Response("Kein Dateiname", {status:400});
+    return new Response("Kein Dateiname", {status:400});
 }
 
 /* nur Bildformate erlauben */
@@ -17,7 +17,7 @@ return new Response("Kein Dateiname", {status:400});
 const allowed = /\.(jpg|jpeg|png|webp|heic)$/i;
 
 if(!allowed.test(fileName)){
-return new Response("Nur Bilder erlaubt", {status:400});
+    return new Response("Nur Bilder erlaubt", {status:400});
 }
 
 /* eindeutigen Namen erzeugen */
