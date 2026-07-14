@@ -38,16 +38,38 @@ const fileBuffer = await request.arrayBuffer();
 
 /* Upload zu Nextcloud */
 
-const upload = await fetch(nextcloudURL,{
-method:"PUT",
-headers:{
-Authorization:"Basic " + btoa(shareToken + ":"),
-"X-Requested-With":"XMLHttpRequest"
-},
-body:fileBuffer
-});
+try {
 
-console.log(upload.status);
+    const upload = await fetch(nextcloudURL,{
+        method:"PUT",
+        headers:{
+            Authorization:"Basic " + btoa(shareToken + ":"),
+            "X-Requested-With":"XMLHttpRequest"
+        },
+        body:fileBuffer
+    });
+
+    return new Response(
+        JSON.stringify({
+            status: upload.status,
+            statusText: upload.statusText,
+            url: nextcloudURL
+        }, null, 2),
+        {
+            headers:{
+                "Content-Type":"application/json"
+            }
+        }
+    );
+
+}catch(e){
+
+    return new Response(
+        "FEHLER:\n" + e.toString(),
+        {status:500}
+    );
+
+}
 
 /* Upload prüfen */
 
