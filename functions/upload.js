@@ -41,10 +41,13 @@ const fileBuffer = await request.arrayBuffer();
 const upload = await fetch(nextcloudURL,{
 method:"PUT",
 headers:{
-Authorization:"Basic " + btoa(shareToken + ":")
+Authorization:"Basic " + btoa(shareToken + ":"),
+"X-Requested-With":"XMLHttpRequest"
 },
 body:fileBuffer
 });
+
+console.log(upload.status);
 
 /* Upload prüfen */
 
