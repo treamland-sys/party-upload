@@ -5,7 +5,7 @@ const url = new URL(context.request.url);
 const file = url.searchParams.get("file");
 const thumb = url.searchParams.get("thumb");
 
-const shareToken = "X7fK3RMRtgo8FbA";
+const shareToken = "CyiTxGiYJqBaHHg";
 
 /* Thumbnail oder Original */
 
