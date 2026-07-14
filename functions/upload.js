@@ -4,7 +4,9 @@ const request = context.request;
 
 /* Dateiname vom Browser */
 
-const fileName = request.headers.get("x-file-name");
+const fileName = decodeURIComponent(
+    request.headers.get("x-file-name") || ""
+);
 
 if(!fileName){
 return new Response("Kein Dateiname", {status:400});
