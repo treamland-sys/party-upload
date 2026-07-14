@@ -368,7 +368,10 @@ let xhr=new XMLHttpRequest();
 
 xhr.open("POST","/upload");
 
-xhr.setRequestHeader("x-file-name",file.name);
+xhr.setRequestHeader(
+    "x-file-name",
+    encodeURIComponent(file.name)
+);
 
 xhr.upload.onprogress=function(e){
 
