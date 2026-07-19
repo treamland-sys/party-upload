@@ -95,6 +95,7 @@ function buildGallery(images){
  images.forEach((path,index)=>{
    const file=path.split("/").pop();
    const url="/image?file="+file+"&thumb=1";
+   const fullUrl="/image?file="+file;
    const div=document.createElement("div");
    div.className="photo";
    if(index===0)div.classList.add("newest");
@@ -109,7 +110,7 @@ function buildGallery(images){
       const viewer=document.createElement("div");
       viewer.className="viewer";
       const big=document.createElement("img");
-      big.src=url;
+      big.src=fullUrl;
       viewer.appendChild(big);
       viewer.onclick=()=>viewer.remove();
       document.body.appendChild(viewer);
