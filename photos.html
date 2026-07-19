@@ -92,7 +92,15 @@ function buildGallery(images){
  }
  const gallery=document.getElementById("gallery");
  gallery.innerHTML="";
- images.forEach((path,index)=>{
+
+images.sort((a, b) => {
+    const fileA = a.split("/").pop();
+    const fileB = b.split("/").pop();
+
+    return fileB.localeCompare(fileA, undefined, { numeric: true });
+});
+
+images.forEach((path,index)=>{
    const file=path.split("/").pop();
    const url="/image?file="+file+"&thumb=1";
    const fullUrl="/image?file="+file;
