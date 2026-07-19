@@ -29,7 +29,8 @@ export async function onRequestGet(context) {
   } else {
 
     nextcloudURL =
-      `https://nx70782.your-storageshare.de/public.php/webdav/${encodeURIComponent(file)}`;
+      nextcloudURL =
+  `https://nx70782.your-storageshare.de/public.php/webdav/${file}`;
 
     const response = await fetch(nextcloudURL, {
       headers: {
