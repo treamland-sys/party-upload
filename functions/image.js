@@ -1,43 +1,49 @@
 export async function onRequestGet(context) {
 
-const url = new URL(context.request.url);
+  const url = new URL(context.request.url);
 
-const file = url.searchParams.get("file");
-const thumb = url.searchParams.get("thumb");
+  const file = url.searchParams.get("file");
+  const thumb = url.searchParams.get("thumb");
 
-const shareToken = "CyiTxGiYJqBaHHg";
+  const shareToken = "CyiTxGiYJqBaHHg";
 
-/* Thumbnail oder Original */
+  let nextcloudURL;
 
-let nextcloudURL;
+  if (thumb) {
 
-if(thumb){
+    nextcloudURL =
+      `https://nx70782.your-storageshare.de/apps/files_sharing/publicpreview/${shareToken}` +
+      `?file=/${encodeURIComponent(file)}` +
+      `&x=256&y=256&mimeFallback=true&a=0`;
 
-nextcloudURL =
-`https://nx70782.your-storageshare.de/public.php/dav/files/${shareToken}/${file}?preview=1&x=600&y=600`;
+    const response = await fetch(nextcloudURL);
 
-}else{
+    return new Response(response.body, {
+      status: response.status,
+      headers: {
+        "Content-Type": response.headers.get("content-type") || "image/jpeg",
+        "Cache-Control": "public, max-age=86400"
+      }
+    });
 
-nextcloudURL =
-`https://nx70782.your-storageshare.de/public.php/webdav/${file}`;
+  } else {
 
-}
+    nextcloudURL =
+      `https://nx70782.your-storageshare.de/public.php/webdav/${encodeURIComponent(file)}`;
 
-/* Anfrage an Nextcloud */
+    const response = await fetch(nextcloudURL, {
+      headers: {
+        Authorization: "Basic " + btoa(shareToken + ":")
+      }
+    });
 
-const response = await fetch(nextcloudURL,{
-headers:{
-Authorization:"Basic " + btoa(shareToken + ":")
-}
-});
+    return new Response(response.body, {
+      status: response.status,
+      headers: {
+        "Content-Type": response.headers.get("content-type"),
+        "Cache-Control": "public, max-age=86400"
+      }
+    });
 
-/* Bild zurückgeben */
-
-return new Response(response.body,{
-headers:{
-"Content-Type": response.headers.get("content-type"),
-"Cache-Control":"public, max-age=86400"
-}
-});
-
+  }
 }
