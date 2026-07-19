@@ -14,7 +14,8 @@ let nextcloudURL;
 if(thumb){
 
 nextcloudURL =
-`https://nx70782.your-storageshare.de/public.php/dav/files/${shareToken}/${file}?preview=1&x=600&y=600`;
+nextcloudURL =
+`https://nx70782.your-storageshare.de/core/preview?file=/${encodeURIComponent(file)}&x=600&y=600&a=true`;
 
 }else{
 
