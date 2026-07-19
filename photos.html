@@ -99,7 +99,11 @@ function buildGallery(images){
    div.className="photo";
    if(index===0)div.classList.add("newest");
    const img=document.createElement("img");
-   img.src=url;
+
+   img.loading = "lazy";
+   img.decoding = "async";
+
+   img.src = url;
    img.onclick=()=>{
       const viewer=document.createElement("div");
       viewer.className="viewer";
