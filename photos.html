@@ -77,12 +77,16 @@ transition:.25s;
 
 <script>
 let lastImageCount=0;
+let allImages=[];
+let loaded=0;
+const CHUNK=24;
 async function loadGallery(){
  const res=await fetch("/gallery?t="+Date.now());
  const images=await res.json();
  document.getElementById("total").innerHTML="📸 "+images.length+" Fotos insgesamt";
  if(images.length!==lastImageCount){lastImageCount=images.length;buildGallery(images);}
 }
+
 function buildGallery(images){
  images=images.sort().reverse();
  const lastSeen=localStorage.getItem("lastSeenCount")||0;
@@ -90,35 +94,65 @@ function buildGallery(images){
  if(newCount>0){
    document.getElementById("new").innerHTML="✨ "+newCount+" neue Fotos seit deinem letzten Besuch";
  }
+ document.getElementById("total").innerHTML="📸 "+images.length+" Fotos insgesamt";
+ allImages=images;
+ loaded=0;
  const gallery=document.getElementById("gallery");
  gallery.innerHTML="";
- images.forEach((path,index)=>{
-   const file=path.split("/").pop();
-   const url="/image?file="+file+"&thumb=1";
+ loadNextChunk();
+ localStorage.setItem("lastSeenCount",images.length);
+}
+
+function loadNextChunk(){
+ const gallery=document.getElementById("gallery");
+ const end=Math.min(loaded+CHUNK,allImages.length);
+
+ for(let i=loaded;i<end;i++){
+   const file=allImages[i].split("/").pop();
+   const thumb="/image?file="+file+"&thumb=1";
+   const original="/image?file="+file;
+
    const div=document.createElement("div");
    div.className="photo";
-   if(index===0)div.classList.add("newest");
+   if(i===0)div.classList.add("newest");
+
    const img=document.createElement("img");
+   img.loading="lazy";
+   img.decoding="async";
+   img.fetchPriority="low";
+   img.src=thumb;
 
-   img.loading = "lazy";
-   img.decoding = "async";
-   img.fetchPriority = "low";
-
-   img.src = url;
    img.onclick=()=>{
       const viewer=document.createElement("div");
       viewer.className="viewer";
       const big=document.createElement("img");
-      big.src=url;
+      big.src=original;
       viewer.appendChild(big);
       viewer.onclick=()=>viewer.remove();
       document.body.appendChild(viewer);
    };
+
    div.appendChild(img);
    gallery.appendChild(div);
- });
- localStorage.setItem("lastSeenCount",images.length);
+ }
+
+ loaded=end;
+ if(loaded>=allImages.length)return;
+
+ const sentinel=document.createElement("div");
+ gallery.appendChild(sentinel);
+
+ const observer=new IntersectionObserver(entries=>{
+   if(entries[0].isIntersecting){
+      observer.disconnect();
+      sentinel.remove();
+      loadNextChunk();
+   }
+ },{rootMargin:"300px"});
+
+ observer.observe(sentinel);
 }
+
 loadGallery();
 //setInterval(loadGallery,8000);
 </script>
